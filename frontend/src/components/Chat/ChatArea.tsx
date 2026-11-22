@@ -3,7 +3,11 @@ import { useNavigate } from 'react-router';
 import { MessageBubble } from './MessageBubble';
 import { InputArea } from './InputArea';
 import { StreamingDots } from './StreamingDots';
-import { UltronLogo } from '../UltronLogo';
+import { UltronCore } from '../Ultron/UltronCore';
+import { UltronFrame } from '../Ultron/UltronFrame';
+import { UltronHeader } from '../Ultron/UltronHeader';
+import { HoloPanels } from '../Ultron/HoloPanels';
+import { useUltronMood } from '../Ultron/useUltronMood';
 import { useAppStore } from '../../lib/store';
 import { shouldAutoplayFinishedReply, useTtsStore } from '../../lib/tts';
 import { stripThinkTags } from '../../lib/message-text';
@@ -23,6 +27,9 @@ export function ChatArea() {
   const streamState = useAppStore((s) => s.streamState);
   const systemPanelOpen = useAppStore((s) => s.systemPanelOpen);
   const toggleSystemPanel = useAppStore((s) => s.toggleSystemPanel);
+  const selectedModel = useAppStore((s) => s.selectedModel);
+  const serverInfo = useAppStore((s) => s.serverInfo);
+  const mood = useUltronMood();
   const navigate = useNavigate();
   const listRef = useRef<HTMLDivElement>(null);
   const shouldAutoScroll = useRef(true);
@@ -134,13 +141,22 @@ export function ChatArea() {
   const PanelIcon = systemPanelOpen ? PanelRightClose : PanelRightOpen;
 
   return (
-    <div className="flex flex-col h-full">
-      {/* Toggle bar */}
-      <div className="flex items-center justify-end px-3 py-1.5 shrink-0">
+    <div className="ultron-stage relative flex flex-col h-full overflow-hidden">
+      {/* Scene: 3D core, side panels and frame */}
+      <div className={`absolute inset-0 z-0 transition-opacity duration-700 ${isEmpty ? 'opacity-100' : 'opacity-30'}`}>
+        <UltronCore mood={mood} compact={!isEmpty} />
+      </div>
+      {isEmpty && (
+        <HoloPanels mood={mood} model={selectedModel} online={serverInfo ? true : null} messages={messages.length} />
+      )}
+      <UltronFrame />
+
+      {/* Top bar: clock + wordmark on the left, system panel on the right */}
+      <div className="relative z-[3] flex items-start justify-between shrink-0 ultron-topbar">
+        <UltronHeader />
         <button
           onClick={toggleSystemPanel}
-          className="p-1.5 rounded-md transition-colors cursor-pointer"
-          style={{ color: 'var(--color-text-tertiary)' }}
+          className="ultron-icon-btn mt-[6px]"
           title={`${systemPanelOpen ? 'Ocultar' : 'Mostrar'} panel del sistema (${navigator.platform.includes('Mac') ? '⌘' : 'Ctrl'}+I)`}
         >
           <PanelIcon size={16} />
@@ -148,85 +164,41 @@ export function ChatArea() {
       </div>
 
       {/* Data sources banner */}
-      {hasConnectedSources === false && !bannerDismissed && (
-        <div
-          className="mx-4 mb-2 flex items-center gap-3 px-4 py-3 rounded-lg text-sm shrink-0"
-          style={{
-            background: 'var(--color-accent-subtle)',
-            border: '1px solid var(--color-border)',
-          }}
-        >
+      {hasConnectedSources === false && !bannerDismissed && isEmpty && (
+        <div className="ultron-banner relative z-[3] mx-auto mb-2 flex items-center gap-3 px-4 py-2.5 text-sm shrink-0">
           <Database size={16} style={{ color: 'var(--color-accent)', flexShrink: 0 }} />
           <span style={{ color: 'var(--color-text-secondary)', flex: 1 }}>
             Conecta tus fuentes de datos (Gmail, iMessage, Slack, etc.) para recibir respuestas personalizadas.
           </span>
-          <button
-            onClick={() => navigate('/data-sources')}
-            className="px-3 py-1 rounded text-xs font-medium cursor-pointer"
-            style={{ background: 'var(--color-accent)', color: 'var(--color-on-accent)', border: 'none' }}
-          >
+          <button onClick={() => navigate('/data-sources')} className="ultron-chip">
             Conectar
           </button>
           <button
+            onClick={() => { navigate('/data-sources'); setTimeout(() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'messaging' })), 100); }}
+            className="ultron-chip hidden lg:inline-flex"
+          >
+            <MessageSquare size={12} /> Canales
+          </button>
+          <button
             onClick={() => setBannerDismissed(true)}
-            className="p-1 rounded cursor-pointer"
+            className="p-1 cursor-pointer"
             style={{ color: 'var(--color-text-tertiary)', background: 'transparent', border: 'none' }}
+            aria-label="Cerrar aviso"
           >
             <X size={14} />
           </button>
         </div>
       )}
+
       <div
         ref={listRef}
         onScroll={handleScroll}
-        className="flex-1 overflow-y-auto"
+        className="relative z-[3] flex-1 overflow-y-auto"
       >
         {isEmpty ? (
-          <div className="flex flex-col items-center justify-center h-full px-4">
-            <div className="flex items-center justify-center mb-5">
-              <UltronLogo size={112} animated />
-            </div>
-            <h2 className="text-2xl font-semibold mb-2" style={{ color: 'var(--color-text)', fontFamily: 'var(--font-display)', letterSpacing: '0.04em' }}>
-              {getGreeting()}
-            </h2>
-            <p className="text-sm text-center max-w-sm mb-6" style={{ color: 'var(--color-text-secondary)' }}>
-              Pregúntame lo que quieras. Tu IA funciona en local: privada, rápida y siempre disponible.
-            </p>
-
-            {/* Quick action hints */}
-            <div className="flex gap-3">
-              <button
-                onClick={() => navigate('/data-sources')}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs cursor-pointer transition-colors"
-                style={{
-                  background: 'var(--color-bg-secondary)',
-                  border: '1px solid var(--color-border)',
-                  color: 'var(--color-text-secondary)',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--color-accent)')}
-                onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--color-border)')}
-              >
-                <Database size={14} style={{ color: 'var(--color-accent)' }} />
-                Conectar fuentes de datos
-              </button>
-              <button
-                onClick={() => { navigate('/data-sources'); setTimeout(() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'messaging' })), 100); }}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs cursor-pointer transition-colors"
-                style={{
-                  background: 'var(--color-bg-secondary)',
-                  border: '1px solid var(--color-border)',
-                  color: 'var(--color-text-secondary)',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--color-accent)')}
-                onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--color-border)')}
-              >
-                <MessageSquare size={14} style={{ color: 'var(--color-accent)' }} />
-                Configurar canales de mensajería
-              </button>
-            </div>
-          </div>
+          <div className="h-full" aria-label={getGreeting()} />
         ) : (
-          <div className="max-w-[var(--chat-max-width)] mx-auto px-4 py-6">
+          <div className="ultron-messages max-w-[var(--chat-max-width)] mx-auto px-4 py-6">
             {messages.map((msg, i) => {
               const isLastAssistant =
                 i === messages.length - 1 && msg.role === 'assistant';
@@ -253,7 +225,9 @@ export function ChatArea() {
           </div>
         )}
       </div>
-      <InputArea />
+      <div className="relative z-[3]">
+        <InputArea />
+      </div>
     </div>
   );
 }

@@ -69,10 +69,9 @@ export function Sidebar() {
       {!sidebarOpen && (
         <button
           onClick={toggleSidebar}
-          className="fixed top-3 left-3 z-30 p-2 rounded-lg transition-colors cursor-pointer"
-          style={{ color: 'var(--color-text-secondary)', background: 'var(--color-bg-secondary)' }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--color-bg-tertiary)')}
-          onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--color-bg-secondary)')}
+          className="ultron-icon-btn fixed top-[40px] right-[88px] z-30"
+          title="Abrir menú"
+          aria-label="Abrir menú"
         >
           <PanelLeft size={18} />
         </button>

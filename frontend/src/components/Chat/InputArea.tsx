@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { Send, Square, Paperclip, Search } from 'lucide-react';
+import { Send, Square, Plus, Mic, Loader2, Telescope } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAppStore, generateId } from '../../lib/store';
 import { streamChat, streamResearch } from '../../lib/sse';
@@ -10,7 +10,7 @@ import {
   engineFromCompletionChunk,
   resolveChatEngine,
 } from '../../lib/chat-telemetry';
-import { MicButton } from './MicButton';
+import { setUltronListening } from '../../lib/ultronState';
 import { useSpeech } from '../../hooks/useSpeech';
 import type {
   ChatMessage,
@@ -139,6 +139,11 @@ export function InputArea() {
       toast.error(speechError, { duration: 8000 });
     }
   }, [speechError]);
+
+  useEffect(() => {
+    setUltronListening(speechState === 'recording');
+    return () => setUltronListening(false);
+  }, [speechState]);
 
   const handleMicClick = useCallback(async () => {
     if (speechState === 'recording') {
@@ -563,97 +568,105 @@ export function InputArea() {
     }
   };
 
+  const messagesCount = useAppStore((s) => s.messages.length);
+  const handleNewChat = () => {
+    if (streamState.isStreaming || messagesCount === 0) return;
+    createConversation(selectedModel);
+  };
+  const hasText = input.trim().length > 0;
+  const canSend = hasText && !streamState.isStreaming && !modelLoading && !!selectedModel;
+  const bigAction: 'stop' | 'send' | 'mic' = isCurrentChatStreaming ? 'stop' : hasText ? 'send' : 'mic';
+  const bigDisabled =
+    bigAction === 'send' ? !canSend : bigAction === 'mic' ? micDisabled || speechState === 'transcribing' : false;
+  const bigTitle =
+    bigAction === 'stop'
+      ? 'Detener respuesta'
+      : bigAction === 'send'
+        ? selectedModel ? 'Enviar mensaje' : 'Elige primero un modelo (⌘K)'
+        : micReason === 'not-enabled'
+          ? 'Entrada de voz: actívala en Ajustes'
+          : micReason === 'no-backend'
+            ? 'El motor de voz no está configurado'
+            : speechState === 'recording'
+              ? 'Detener grabación'
+              : speechState === 'transcribing'
+                ? 'Transcribiendo...'
+                : 'Hablar con Ultron';
+  const onBigClick = () => {
+    if (bigAction === 'stop') stopStreaming();
+    else if (bigAction === 'send') sendMessage();
+    else handleMicClick();
+  };
+
   return (
-    <div className="px-4 pb-4 pt-2" style={{ maxWidth: 'var(--chat-max-width)', margin: '0 auto', width: '100%' }}>
-      <div className="mb-2 flex flex-col gap-1">
-        <div className="flex items-center gap-2">
+    <div className="ultron-inputbar px-6 pb-14 pt-2">
+      {deepResearch && corpusSync.syncing && corpusSync.itemsSynced > 0 && (
+        <div
+          className="text-[11px] leading-snug text-center mb-2"
+          style={{ color: 'var(--color-text-tertiary)' }}
+        >
+          Buscando en{' '}
+          <span key={corpusSync.itemsSynced} className="sync-bump" style={{ color: 'var(--color-text-secondary)' }}>
+            {corpusSync.itemsSynced.toLocaleString()}
+          </span>{' '}
+          elementos. La sincronización está en curso; los resultados mejorarán a medida que se indexen más datos.
+        </div>
+      )}
+      <div className="flex items-center justify-center gap-5 mx-auto" style={{ maxWidth: 1000 }}>
+        <button
+          type="button"
+          onClick={handleNewChat}
+          disabled={streamState.isStreaming || messagesCount === 0}
+          className="ultron-round-btn shrink-0"
+          title="Nuevo chat"
+          aria-label="Nuevo chat"
+        >
+          <Plus size={24} strokeWidth={1.6} />
+        </button>
+
+        <div className="ultron-input-pill flex-1 flex items-center gap-3 px-6">
+          <textarea
+            ref={textareaRef}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder={selectedModel ? 'Escribe un mensaje...' : 'Elige primero un modelo (⌘K)...'}
+            rows={1}
+            className="flex-1 bg-transparent outline-none resize-none text-[15px] leading-relaxed py-4"
+            style={{ color: 'var(--color-text)', maxHeight: '160px' }}
+            disabled={streamState.isStreaming || modelLoading}
+          />
           <button
             type="button"
             onClick={() => setDeepResearch(!deepResearch)}
             disabled={streamState.isStreaming}
             aria-pressed={deepResearch}
-            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs transition-colors cursor-pointer disabled:cursor-default disabled:opacity-50"
-            style={{
-              background: deepResearch ? 'var(--color-accent-subtle)' : 'transparent',
-              border: `1px solid ${deepResearch ? 'var(--color-accent)' : 'var(--color-border)'}`,
-              color: deepResearch ? 'var(--color-accent)' : 'var(--color-text-tertiary)',
-            }}
+            className={`ultron-pill-icon shrink-0 ${deepResearch ? 'is-on' : ''}`}
             title={deepResearch ? 'Investigación a fondo: activada' : 'Investigación a fondo: desactivada'}
           >
-            <Search size={12} />
-            Investigación a fondo
+            <Telescope size={20} strokeWidth={1.6} />
           </button>
         </div>
-        {deepResearch && corpusSync.syncing && corpusSync.itemsSynced > 0 && (
-          <div
-            className="text-[11px] leading-snug"
-            style={{ color: 'var(--color-text-tertiary)' }}
-          >
-            Buscando en{' '}
-            <span key={corpusSync.itemsSynced} className="sync-bump" style={{ color: 'var(--color-text-secondary)' }}>
-              {corpusSync.itemsSynced.toLocaleString()}
-            </span>{' '}
-            elementos. La sincronización está en curso; los resultados mejorarán a medida que se indexen más datos.
-          </div>
-        )}
-      </div>
-      <div
-        className="ultron-input-shell flex items-center gap-2 rounded-2xl px-4 py-3"
-        style={{
-          background: 'var(--color-input-bg)',
-          border: '1px solid var(--color-input-border)',
-          boxShadow: 'var(--shadow-sm)',
-        }}
-      >
-        <textarea
-          ref={textareaRef}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder={selectedModel ? 'Escribe a Ultron...' : 'Elige primero un modelo (⌘K)...'}
-          rows={1}
-          className="flex-1 bg-transparent outline-none resize-none text-sm leading-relaxed"
-          style={{ color: 'var(--color-text)', maxHeight: '200px' }}
-          disabled={streamState.isStreaming || modelLoading}
-        />
-        {isCurrentChatStreaming ? (
-          <button
-            onClick={stopStreaming}
-            className="p-2 rounded-xl transition-colors shrink-0 cursor-pointer"
-            style={{ background: 'var(--color-error)', color: 'var(--color-on-accent)' }}
-            title="Detener respuesta"
-          >
-            <Square size={16} />
-          </button>
-        ) : (
-          <div className="flex items-center gap-1">
-            <MicButton
-              state={speechState}
-              onClick={handleMicClick}
-              disabled={micDisabled}
-              reason={micReason}
-            />
-            <button
-              onClick={sendMessage}
-              disabled={streamState.isStreaming || !input.trim() || modelLoading || !selectedModel}
-              title={selectedModel ? 'Enviar mensaje' : 'Elige primero un modelo (⌘K)'}
-              className="p-2 rounded-xl transition-colors shrink-0 cursor-pointer disabled:opacity-30 disabled:cursor-default"
-              style={{
-                background: input.trim() ? 'var(--color-accent)' : 'var(--color-bg-tertiary)',
-                color: input.trim() ? 'white' : 'var(--color-text-tertiary)',
-                boxShadow: input.trim() ? '0 0 16px -2px var(--color-accent-glow)' : 'none',
-              }}
-            >
-              <Send size={16} />
-            </button>
-          </div>
-        )}
-      </div>
-      <div className="flex items-center justify-center mt-2 text-[11px]" style={{ color: 'var(--color-text-tertiary)' }}>
-        <span>
-          <kbd className="font-mono">Intro</kbd> para enviar &middot;{' '}
-          <kbd className="font-mono">Shift+Enter</kbd> para saltar de línea
-        </span>
+
+        <button
+          type="button"
+          onClick={onBigClick}
+          disabled={bigDisabled}
+          className={`ultron-mic-btn shrink-0 ${speechState === 'recording' ? 'is-recording' : ''} ${bigAction}`}
+          title={bigTitle}
+          aria-label={bigTitle}
+        >
+          <span className="ultron-mic-ring" />
+          {bigAction === 'stop' ? (
+            <Square size={26} strokeWidth={1.8} />
+          ) : bigAction === 'send' ? (
+            <Send size={28} strokeWidth={1.6} />
+          ) : speechState === 'transcribing' ? (
+            <Loader2 size={30} strokeWidth={1.6} className="animate-spin" />
+          ) : (
+            <Mic size={34} strokeWidth={1.5} />
+          )}
+        </button>
       </div>
     </div>
   );

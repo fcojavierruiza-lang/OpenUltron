@@ -31,13 +31,13 @@ interface RingDef {
 }
 
 const RINGS: RingDef[] = [
-  { radius: 1.07, width: 0.15, rx: 1.12, rz: 0.38, wx: 0.11, wz: 0.05, rivets: true },
-  { radius: 1.13, width: 0.11, rx: 0.42, rz: -0.95, wx: -0.07, wz: 0.09, rivets: true },
-  { radius: 1.19, width: 0.08, rx: 1.48, rz: 1.15, wx: 0.05, wz: -0.06, rivets: true },
-  { radius: 1.3, width: 0.055, rx: 0.16, rz: 0.06, wx: 0.0, wz: 0.02, rivets: false },
+  { radius: 1.1, width: 0.17, rx: 1.12, rz: 0.38, wx: 0.11, wz: 0.05, rivets: true },
+  { radius: 1.16, width: 0.13, rx: 0.42, rz: -0.95, wx: -0.07, wz: 0.09, rivets: true },
+  { radius: 1.22, width: 0.1, rx: 1.48, rz: 1.15, wx: 0.05, wz: -0.06, rivets: true },
+  { radius: 1.34, width: 0.065, rx: 0.16, rz: 0.06, wx: 0.0, wz: 0.02, rivets: false },
 ];
 
-const SEGMENTS = 120;
+const SEGMENTS = 96;
 
 function rand(seed: number) {
   // Small deterministic PRNG so the plasma looks the same on every load.
@@ -75,7 +75,7 @@ function rotZ(v: Vec3, a: number): Vec3 {
 function buildFilaments(): Vec3[][] {
   const r = rand(7);
   const out: Vec3[][] = [];
-  for (let i = 0; i < 56; i++) {
+  for (let i = 0; i < 64; i++) {
     const radius = 0.25 + r() * 0.72;
     let p = normalize([r() * 2 - 1, r() * 2 - 1, r() * 2 - 1]);
     let d = normalize(cross(p, normalize([r() * 2 - 1, r() * 2 - 1, r() * 2 - 1])));
@@ -83,10 +83,10 @@ function buildFilaments(): Vec3[][] {
     const steps = 26 + Math.floor(r() * 26);
     for (let k = 0; k < steps; k++) {
       pts.push([p[0] * radius, p[1] * radius, p[2] * radius]);
-      const turn = (r() - 0.5) * 0.9;
+      const turn = (r() - 0.5) * 2.2;
       const side = cross(p, d);
       d = normalize([d[0] + side[0] * turn, d[1] + side[1] * turn, d[2] + side[2] * turn]);
-      p = normalize([p[0] + d[0] * 0.09, p[1] + d[1] * 0.09, p[2] + d[2] * 0.09]);
+      p = normalize([p[0] + d[0] * 0.065, p[1] + d[1] * 0.065, p[2] + d[2] * 0.065]);
       d = normalize(cross(cross(p, d), p));
     }
     out.push(pts);
@@ -155,8 +155,8 @@ export function UltronCore({ mood, compact = false, className }: Props) {
       s.spin += (target.spin - s.spin) * k;
       s.red += (target.red - s.red) * k;
       const compactNow = compactRef.current;
-      const targetR = compactNow ? Math.min(w * 0.13, h * 0.22) : Math.min(w * 0.15, h * 0.235);
-      const targetCy = compactNow ? h * 0.4 : h * 0.385;
+      const targetR = compactNow ? Math.min(w * 0.16, h * 0.24) : Math.min(w * 0.2, h * 0.27);
+      const targetCy = compactNow ? h * 0.42 : h * 0.4;
       if (s.R === 0) { s.R = targetR; s.cy = targetCy; }
       const kl = 1 - Math.exp(-dt * 4);
       s.R += (targetR - s.R) * kl;
@@ -196,50 +196,59 @@ export function UltronCore({ mood, compact = false, className }: Props) {
         const vv = orient([0, 0, 1]);
         const n = orient([0, 1, 0]);
         const hw = ring.width / 2;
+        const ro = ring.radius, rin = ring.radius - ring.width * 0.42;
         const spinOff = s.phase * (0.3 + ri * 0.1);
+        const nView = rotX(rotY(n, yaw), tilt);
         for (let i = 0; i < SEGMENTS; i++) {
           const a0 = (i / SEGMENTS) * Math.PI * 2;
-          const a1 = ((i + 1.15) / SEGMENTS) * Math.PI * 2;
+          const a1 = ((i + 1.08) / SEGMENTS) * Math.PI * 2;
           const radial = (a: number): Vec3 => [
             u[0] * Math.cos(a) + vv[0] * Math.sin(a),
             u[1] * Math.cos(a) + vv[1] * Math.sin(a),
             u[2] * Math.cos(a) + vv[2] * Math.sin(a),
           ];
           const r0 = radial(a0), r1 = radial(a1);
-          const P = (rd: Vec3, off: number): Vec3 => [
-            rd[0] * ring.radius + n[0] * off,
-            rd[1] * ring.radius + n[1] * off,
-            rd[2] * ring.radius + n[2] * off,
+          const P = (rd: Vec3, rad: number, off: number): Vec3 => [
+            rd[0] * rad + n[0] * off, rd[1] * rad + n[1] * off, rd[2] * rad + n[2] * off,
           ];
-          const q = [P(r0, -hw), P(r1, -hw), P(r1, hw), P(r0, hw)].map(project);
-          // Shading in view space.
-          const rv = rotX(rotY(radial((a0 + a1) / 2), yaw), tilt);
-          const facing = rv[2];
-          const lam = Math.abs(dot(rv, LIGHT));
-          const spec = Math.pow(Math.max(0, Math.abs(dot(rv, HALF))), 28);
+          const rMid = rotX(rotY(radial((a0 + a1) / 2), yaw), tilt);
           const panel = ((i + Math.floor(spinOff * 6)) % 10 + 10) % 10;
-          const band = panel === 0 ? 0.35 : 0.85 + 0.15 * Math.sin((a0 + spinOff) * 7);
-          const spec2 = Math.pow(spec, 2);
-          let r = 16 + 120 * lam * band + 120 * spec + 140 * spec2;
-          let g = 16 + 122 * lam * band + 120 * spec + 140 * spec2;
-          let b = 20 + 130 * lam * band + 125 * spec + 140 * spec2;
-          if (facing < 0) {
-            // Inner face: lit red by the plasma.
-            r += 190 * E; g += 14 * E; b += 8 * E;
+          const seam = panel === 0;
+          // Four faces of the band: outer, inner, top and bottom.
+          const faces: { c: Vec3[]; nv: Vec3; inner: boolean; edge: boolean }[] = [
+            { c: [P(r0, ro, -hw), P(r1, ro, -hw), P(r1, ro, hw), P(r0, ro, hw)], nv: rMid, inner: false, edge: false },
+            { c: [P(r0, rin, -hw), P(r1, rin, -hw), P(r1, rin, hw), P(r0, rin, hw)], nv: [-rMid[0], -rMid[1], -rMid[2]], inner: true, edge: false },
+            { c: [P(r0, rin, hw), P(r1, rin, hw), P(r1, ro, hw), P(r0, ro, hw)], nv: nView, inner: false, edge: true },
+            { c: [P(r0, rin, -hw), P(r1, rin, -hw), P(r1, ro, -hw), P(r0, ro, -hw)], nv: [-nView[0], -nView[1], -nView[2]], inner: false, edge: true },
+          ];
+          for (const f of faces) {
+            if (f.nv[2] < -0.02) continue; // facing away
+            const q = f.c.map(project);
+            const lam = Math.max(0, dot(f.nv, LIGHT));
+            const spec = Math.pow(Math.max(0, dot(f.nv, HALF)), 36) * (f.edge ? 0.45 : 1);
+            const fres = Math.pow(1 - Math.abs(f.nv[2]), 3);
+            const floorRefl = Math.max(0, -f.nv[1]);
+            const tone = seam ? 0.45 : 1;
+            let r = (9 + 52 * lam + 210 * spec + 34 * fres) * tone;
+            let g = (9 + 53 * lam + 205 * spec + 32 * fres) * tone;
+            let b = (11 + 58 * lam + 205 * spec + 33 * fres) * tone;
+            r += 110 * floorRefl * E; g += 6 * floorRefl * E; b += 4 * floorRefl * E;
+            if (f.inner) { r = r * 0.6 + 140 * E; g = g * 0.6 + 12 * E; b = b * 0.6 + 8 * E; }
+            if (f.edge) { r += 12; g += 12; b += 14; }
+            const col = `rgb(${Math.min(255, r) | 0},${Math.min(255, g) | 0},${Math.min(255, b) | 0})`;
+            const zMid = (q[0][2] + q[2][2]) / 2;
+            const rivet: [number, number] | null = ring.rivets && !f.inner && !f.edge && i % 5 === 0 && f.nv[2] > 0.15
+              ? [(q[0][0] + q[1][0] + q[2][0] + q[3][0]) / 4, (q[0][1] + q[1][1] + q[2][1] + q[3][1]) / 4]
+              : null;
+            const quad: Quad = {
+              pts: q.map((p) => [p[0], p[1]] as [number, number]),
+              z: zMid,
+              col,
+              rivet,
+              edge: f.inner ? `rgba(255,70,45,${0.35 * E})` : seam ? 'rgba(0,0,0,0.8)' : `rgba(200,200,210,${0.08 + 0.4 * spec})`,
+            };
+            (zMid < 0 ? back : front).push(quad);
           }
-          const col = `rgb(${Math.min(255, r) | 0},${Math.min(255, g) | 0},${Math.min(255, b) | 0})`;
-          const zMid = (q[0][2] + q[2][2]) / 2;
-          const rivet: [number, number] | null = ring.rivets && i % 6 === 0 && facing > 0.1
-            ? [(q[0][0] + q[3][0]) / 2, (q[0][1] + q[3][1]) / 2]
-            : null;
-          const quad: Quad = {
-            pts: q.map((p) => [p[0], p[1]] as [number, number]),
-            z: zMid,
-            col,
-            rivet,
-            edge: facing < 0 ? `rgba(255,60,40,${0.5 * E})` : 'rgba(0,0,0,0.55)',
-          };
-          (zMid < 0 ? back : front).push(quad);
         }
       });
       back.sort((a, b) => a.z - b.z);
@@ -252,6 +261,9 @@ export function UltronCore({ mood, compact = false, className }: Props) {
           sctx.closePath();
           sctx.fillStyle = qd.col;
           sctx.fill();
+          sctx.strokeStyle = qd.col;
+          sctx.lineWidth = 0.9;
+          sctx.stroke();
           sctx.strokeStyle = qd.edge;
           sctx.lineWidth = 0.6;
           sctx.beginPath();
@@ -272,8 +284,8 @@ export function UltronCore({ mood, compact = false, className }: Props) {
 
       // Glass body.
       const body = sctx.createRadialGradient(cx - R * 0.15, cy - R * 0.2, R * 0.1, cx, cy, R);
-      body.addColorStop(0, `rgba(170,18,10,${0.6 + 0.25 * E})`);
-      body.addColorStop(0.55, 'rgba(90,6,5,0.85)');
+      body.addColorStop(0, `rgba(130,12,8,${0.55 + 0.2 * E})`);
+      body.addColorStop(0.55, 'rgba(60,4,4,0.88)');
       body.addColorStop(0.92, 'rgba(30,3,3,0.92)');
       body.addColorStop(1, 'rgba(70,6,5,0.95)');
       sctx.fillStyle = body;
@@ -300,10 +312,24 @@ export function UltronCore({ mood, compact = false, className }: Props) {
           sctx.stroke();
         }
       });
+      // Bright nodes where the plasma veins meet.
+      filaments.forEach((pts, fi) => {
+        if (fi % 2) return;
+        const p = project(pts[(fi * 7) % pts.length]);
+        const pulse = 0.5 + 0.5 * Math.sin(t * 3 + fi);
+        const rr = Math.max(1.2, R * 0.012) * (0.7 + 0.6 * pulse);
+        const gnode = sctx.createRadialGradient(p[0], p[1], 0, p[0], p[1], rr * 4);
+        gnode.addColorStop(0, `rgba(255,${Math.round(220 - 150 * red)},${Math.round(190 - 150 * red)},${0.9 * E})`);
+        gnode.addColorStop(1, 'rgba(255,40,20,0)');
+        sctx.fillStyle = gnode;
+        sctx.beginPath();
+        sctx.arc(p[0], p[1], rr * 4, 0, Math.PI * 2);
+        sctx.fill();
+      });
       // Inner nebula glow.
       const neb = sctx.createRadialGradient(cx, cy, R * 0.1, cx, cy, R * 0.95);
-      neb.addColorStop(0, `rgba(255,60,30,${0.35 * E})`);
-      neb.addColorStop(0.6, `rgba(200,20,10,${0.18 * E})`);
+      neb.addColorStop(0, `rgba(255,60,30,${0.3 * E})`);
+      neb.addColorStop(0.6, `rgba(200,20,10,${0.1 * E})`);
       neb.addColorStop(1, 'rgba(120,0,0,0)');
       sctx.fillStyle = neb;
       sctx.beginPath();
@@ -505,6 +531,16 @@ export function UltronCore({ mood, compact = false, className }: Props) {
       ctx.restore();
 
       ctx.drawImage(sphereCanvas, 0, 0);
+      // Bloom: a blurred, additive copy of the sphere makes the light bleed.
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = 0.3 + 0.2 * E;
+      ctx.filter = `blur(${Math.round(R * 0.07 * dpr)}px)`;
+      ctx.drawImage(sphereCanvas, 0, 0);
+      ctx.globalAlpha = 0.22;
+      ctx.filter = `blur(${Math.round(R * 0.22 * dpr)}px)`;
+      ctx.drawImage(sphereCanvas, 0, 0);
+      ctx.restore();
 
       raf = requestAnimationFrame(frame);
     };

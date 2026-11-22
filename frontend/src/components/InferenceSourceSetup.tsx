@@ -6,6 +6,7 @@ import {
   startBackend,
   type InferenceSource,
 } from '../lib/api';
+import { UltronLogo } from './UltronLogo';
 
 export type InferenceSetupStep = 'choose' | 'ollama' | 'custom';
 export type InferenceSetupAction = 'choose_ollama' | 'choose_custom' | 'back';
@@ -56,11 +57,8 @@ function SetupFrame({ children }: { children: React.ReactNode }) {
     <div className="fixed inset-0 flex items-center justify-center" style={{ background: 'var(--color-bg)' }}>
       <div className="w-full max-w-lg px-6">
         <div className="text-center mb-8">
-          <div
-            className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
-            style={{ background: 'var(--color-accent-subtle)', color: 'var(--color-accent)' }}
-          >
-            <Cpu size={32} />
+          <div className="flex items-center justify-center mx-auto mb-4">
+            <UltronLogo size={72} animated />
           </div>
           <h1 className="text-2xl font-bold mb-1" style={{ color: 'var(--color-text)' }}>
             Choose your inference source
@@ -185,7 +183,7 @@ export function OllamaConsent({
             Allow local model setup?
           </h2>
           <p className="text-sm leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
-            OpenJarvis will start Ollama and may download one model selected for this computer. Model downloads can use several gigabytes of disk space and network data.
+            Ultron will start Ollama and may download one model selected for this computer. Model downloads can use several gigabytes of disk space and network data.
           </p>
         </div>
       </div>
@@ -269,7 +267,7 @@ export function CustomEndpointSetup({
             Connect your server
           </h2>
           <p className="text-xs" style={{ color: 'var(--color-text-secondary)' }}>
-            OpenJarvis will connect only after you submit this form. Ollama will not start or download models.
+            Ultron will connect only after you submit this form. Ollama will not start or download models.
           </p>
         </div>
         <label className="text-xs font-medium" style={{ color: 'var(--color-text-secondary)' }}>

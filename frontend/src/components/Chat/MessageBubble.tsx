@@ -12,6 +12,7 @@ import { ResearchTimeline } from './ResearchTimeline';
 import { rehypeCitations } from '../../lib/rehype-citations';
 import { XRayFooter } from './XRayFooter';
 import { SpeakMessageButton } from './SpeakMessageButton';
+import { UltronLogo } from '../UltronLogo';
 import type { ChatMessage } from '../../types';
 import { stripThinkTags } from '../../lib/message-text';
 
@@ -135,7 +136,7 @@ export function MessageBubble({ message, isLive = false }: Props) {
       <div className="flex justify-end mb-4">
         <div
           dir="auto"
-          className="max-w-[85%] px-4 py-2.5 text-sm leading-relaxed"
+          className="ultron-user-bubble max-w-[85%] px-4 py-2.5 text-sm leading-relaxed"
           style={{
             background: 'var(--color-user-bubble)',
             color: 'var(--color-user-bubble-text)',
@@ -151,7 +152,12 @@ export function MessageBubble({ message, isLive = false }: Props) {
   }
 
   return (
-    <div className="group mb-6">
+    <div className="group mb-6 ultron-assistant-msg">
+      <div className="ultron-speaker" aria-hidden="true">
+        <UltronLogo size={16} animated={isLive} />
+        <span>Ultron</span>
+      </div>
+
       {/* Deep Research timeline (steps + status) */}
       {(message.isResearch || (message.researchTraces && message.researchTraces.length > 0)) && (
         <ResearchTimeline

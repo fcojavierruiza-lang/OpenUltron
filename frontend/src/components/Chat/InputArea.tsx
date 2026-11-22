@@ -596,7 +596,7 @@ export function InputArea() {
         )}
       </div>
       <div
-        className="flex items-center gap-2 rounded-2xl px-4 py-3 transition-shadow"
+        className="ultron-input-shell flex items-center gap-2 rounded-2xl px-4 py-3"
         style={{
           background: 'var(--color-input-bg)',
           border: '1px solid var(--color-input-border)',
@@ -608,7 +608,7 @@ export function InputArea() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={selectedModel ? 'Message OpenJarvis...' : 'Pick a model first (⌘K)...'}
+          placeholder={selectedModel ? 'Message Ultron...' : 'Pick a model first (⌘K)...'}
           rows={1}
           className="flex-1 bg-transparent outline-none resize-none text-sm leading-relaxed"
           style={{ color: 'var(--color-text)', maxHeight: '200px' }}
@@ -639,6 +639,7 @@ export function InputArea() {
               style={{
                 background: input.trim() ? 'var(--color-accent)' : 'var(--color-bg-tertiary)',
                 color: input.trim() ? 'white' : 'var(--color-text-tertiary)',
+                boxShadow: input.trim() ? '0 0 16px -2px var(--color-accent-glow)' : 'none',
               }}
             >
               <Send size={16} />

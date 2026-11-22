@@ -135,7 +135,7 @@ export function SettingsPanel({ onSettingsChange }: SettingsPanelProps) {
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.heading}>Settings</h2>
+      <h2 style={styles.heading}>Ajustes</h2>
 
       <div style={styles.fieldGroup}>
         <label style={styles.label}>API URL</label>
@@ -151,7 +151,7 @@ export function SettingsPanel({ onSettingsChange }: SettingsPanelProps) {
       </div>
 
       <div style={styles.fieldGroup}>
-        <label style={styles.label}>Auto-refresh interval</label>
+        <label style={styles.label}>Intervalo de actualización automática</label>
         <select
           style={styles.select}
           value={settings.refreshInterval}
@@ -162,17 +162,17 @@ export function SettingsPanel({ onSettingsChange }: SettingsPanelProps) {
             }))
           }
         >
-          <option value={1}>1 second</option>
-          <option value={2}>2 seconds</option>
-          <option value={5}>5 seconds</option>
-          <option value={10}>10 seconds</option>
-          <option value={30}>30 seconds</option>
-          <option value={60}>60 seconds</option>
+          <option value={1}>1 segundo</option>
+          <option value={2}>2 segundos</option>
+          <option value={5}>5 segundos</option>
+          <option value={10}>10 segundos</option>
+          <option value={30}>30 segundos</option>
+          <option value={60}>60 segundos</option>
         </select>
       </div>
 
       <div style={styles.fieldGroup}>
-        <label style={styles.label}>Theme</label>
+        <label style={styles.label}>Tema</label>
         <div style={styles.toggleRow}>
           <button
             type="button"
@@ -182,7 +182,7 @@ export function SettingsPanel({ onSettingsChange }: SettingsPanelProps) {
             }}
             onClick={() => setSettings((s) => ({ ...s, theme: 'dark' }))}
           >
-            Dark
+            Oscuro
           </button>
           <button
             type="button"
@@ -192,12 +192,12 @@ export function SettingsPanel({ onSettingsChange }: SettingsPanelProps) {
             }}
             onClick={() => setSettings((s) => ({ ...s, theme: 'light' }))}
           >
-            Light
+            Claro
           </button>
         </div>
       </div>
 
-      {saved && <div style={styles.savedNotice}>Settings saved</div>}
+      {saved && <div style={styles.savedNotice}>Ajustes guardados</div>}
     </div>
   );
 }

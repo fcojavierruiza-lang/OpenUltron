@@ -42,7 +42,7 @@ async function browserFallback<T>(
 
   const path = urlMap[command];
   if (!path) {
-    throw new Error(`No browser fallback for command: ${command}`);
+    throw new Error(`No hay alternativa en el navegador para el comando: ${command}`);
   }
 
   const resp = await fetch(`${apiUrl}${path}`);

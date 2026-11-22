@@ -67,7 +67,7 @@ let sdkReady: Promise<void> | null = null;
 
 export async function fetchAnalyticsIdentity(): Promise<AnalyticsIdentity> {
   const response = await apiFetch('/v1/analytics/identity');
-  if (!response.ok) throw new Error('Could not load the analytics setting.');
+  if (!response.ok) throw new Error('No se ha podido cargar el ajuste de estadísticas.');
   return response.json();
 }
 
@@ -85,9 +85,9 @@ export async function saveAnalyticsPreference(enabled: boolean): Promise<void> {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ enabled }),
   });
-  if (!response.ok) throw new Error('Could not save your analytics choice. Please try again.');
+  if (!response.ok) throw new Error('No se ha podido guardar tu elección sobre estadísticas. Inténtalo de nuevo.');
   const identity: AnalyticsIdentity = await response.json();
-  if (identity.enabled !== enabled) throw new Error('Analytics choice was not saved.');
+  if (identity.enabled !== enabled) throw new Error('No se ha guardado tu elección sobre estadísticas.');
   if (enabled) {
     await initAnalytics(true);
   }

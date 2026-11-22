@@ -37,10 +37,10 @@ export class ErrorBoundary extends Component<Props, State> {
               <AlertTriangle size={24} />
             </div>
             <h2 className="text-lg font-semibold mb-2" style={{ color: 'var(--color-text)' }}>
-              Something went wrong
+              Algo ha fallado
             </h2>
             <p className="text-sm mb-4" style={{ color: 'var(--color-text-secondary)' }}>
-              {this.state.error?.message || 'An unexpected error occurred.'}
+              {this.state.error?.message || 'Se ha producido un error inesperado.'}
             </p>
             <button
               onClick={() => this.setState({ hasError: false, error: null })}
@@ -48,7 +48,7 @@ export class ErrorBoundary extends Component<Props, State> {
               style={{ background: 'var(--color-accent)', color: 'var(--color-on-accent)' }}
             >
               <RotateCcw size={14} />
-              Try again
+              Reintentar
             </button>
           </div>
         </div>

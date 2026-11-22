@@ -22,7 +22,7 @@ export function useSpeech() {
     setError(null);
 
     if (!navigator.mediaDevices?.getUserMedia) {
-      setError('Microphone not supported in this browser');
+      setError('Este navegador no admite micrófono');
       return;
     }
 
@@ -41,7 +41,7 @@ export function useSpeech() {
       mediaRecorderRef.current = recorder;
       setState('recording');
     } catch (err) {
-      setError('Microphone access denied');
+      setError('Acceso al micrófono denegado');
       setState('idle');
     }
   }, []);
@@ -50,7 +50,7 @@ export function useSpeech() {
     return new Promise((resolve, reject) => {
       const recorder = mediaRecorderRef.current;
       if (!recorder || recorder.state !== 'recording') {
-        reject(new Error('Not recording'));
+        reject(new Error('No se está grabando'));
         return;
       }
 
@@ -70,7 +70,7 @@ export function useSpeech() {
           resolve(result.text);
         } catch (err) {
           setState('idle');
-          const msg = err instanceof Error ? err.message : 'Transcription failed';
+          const msg = err instanceof Error ? err.message : 'Error en la transcripción';
           setError(msg);
           reject(err);
         }

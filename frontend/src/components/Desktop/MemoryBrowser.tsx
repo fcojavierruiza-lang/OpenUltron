@@ -260,26 +260,26 @@ export function MemoryBrowser({ apiUrl }: { apiUrl: string }) {
 
   return (
     <div style={styles.container}>
-      <div style={styles.header}>Memory Browser</div>
+      <div style={styles.header}>Explorador de memoria</div>
 
       {/* Stats panel */}
       {stats && (
         <div style={styles.statsPanel}>
           <div style={styles.statCard}>
             <div style={styles.statValue}>{stats.backend}</div>
-            <div style={styles.statLabel}>Backend</div>
+            <div style={styles.statLabel}>Motor</div>
           </div>
           <div style={styles.statCard}>
             <div style={styles.statValue}>{stats.total_documents.toLocaleString()}</div>
-            <div style={styles.statLabel}>Documents</div>
+            <div style={styles.statLabel}>Documentos</div>
           </div>
           <div style={styles.statCard}>
             <div style={styles.statValue}>{stats.total_chunks.toLocaleString()}</div>
-            <div style={styles.statLabel}>Chunks</div>
+            <div style={styles.statLabel}>Fragmentos</div>
           </div>
           <div style={styles.statCard}>
             <div style={styles.statValue}>{formatBytes(stats.index_size_bytes)}</div>
-            <div style={styles.statLabel}>Index Size</div>
+            <div style={styles.statLabel}>Tamaño del índice</div>
           </div>
         </div>
       )}
@@ -289,7 +289,7 @@ export function MemoryBrowser({ apiUrl }: { apiUrl: string }) {
         <input
           style={styles.input}
           type="text"
-          placeholder="Search memory..."
+          placeholder="Buscar en la memoria..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -302,7 +302,7 @@ export function MemoryBrowser({ apiUrl }: { apiUrl: string }) {
           onClick={handleSearch}
           disabled={searching || !query.trim()}
         >
-          {searching ? 'Searching...' : 'Search'}
+          {searching ? 'Buscando...' : 'Buscar'}
         </button>
       </div>
 
@@ -310,13 +310,13 @@ export function MemoryBrowser({ apiUrl }: { apiUrl: string }) {
 
       {/* Results */}
       {hasSearched && results.length === 0 && !error && (
-        <div style={styles.emptyState}>No results found for "{query}"</div>
+        <div style={styles.emptyState}>No hay resultados para "{query}"</div>
       )}
 
       {results.length > 0 && (
         <>
           <div style={styles.resultCount}>
-            Showing {results.length} of {resultTotal} results
+            Mostrando {results.length} de {resultTotal} resultados
           </div>
           <div style={styles.resultsList}>
             {results.map((chunk, i) => {
@@ -326,7 +326,7 @@ export function MemoryBrowser({ apiUrl }: { apiUrl: string }) {
                   {/* Score bar */}
                   <div style={styles.scoreContainer}>
                     <div style={styles.scoreHeader}>
-                      <span style={styles.scoreLabel}>Relevance</span>
+                      <span style={styles.scoreLabel}>Relevancia</span>
                       <span style={styles.scoreValue}>{scorePercent}%</span>
                     </div>
                     <div style={styles.scoreBar}>
@@ -362,7 +362,7 @@ export function MemoryBrowser({ apiUrl }: { apiUrl: string }) {
       )}
 
       {!hasSearched && !stats && (
-        <div style={styles.emptyState}>Enter a query to search memory</div>
+        <div style={styles.emptyState}>Escribe una consulta para buscar en la memoria</div>
       )}
     </div>
   );

@@ -96,7 +96,7 @@ function FilesystemPanel({
   return (
     <div className="flex flex-col gap-4">
       <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-        Enter the path to your local {displayName} folder.
+        Escribe la ruta de tu carpeta local de {displayName}.
       </p>
       <div className="flex gap-2">
         <input
@@ -122,7 +122,7 @@ function FilesystemPanel({
           }}
         >
           {isConnecting ? <Loader2 size={14} className="animate-spin" /> : <FolderOpen size={14} />}
-          Connect
+          Conectar
         </button>
       </div>
       <button
@@ -130,7 +130,7 @@ function FilesystemPanel({
         className="text-xs self-start"
         style={{ color: 'var(--color-text-tertiary)' }}
       >
-        Skip for now
+        Saltar por ahora
       </button>
     </div>
   );
@@ -184,13 +184,13 @@ function OAuthPanel({
     <div className="flex flex-col gap-4">
       <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
         {waiting
-          ? `Waiting for ${displayName} authorization... Complete it in the browser window.`
-          : `Connect your ${displayName} account with one click.`}
+          ? `Esperando la autorización de ${displayName}... Complétala en la ventana del navegador.`
+          : `Conecta tu cuenta de ${displayName} con un clic.`}
       </p>
       {waiting ? (
         <div className="flex items-center gap-2 text-sm" style={{ color: 'var(--color-accent)' }}>
           <Loader2 size={16} className="animate-spin" />
-          Waiting for authorization...
+          Esperando autorización...
         </div>
       ) : (
         <button
@@ -202,7 +202,7 @@ function OAuthPanel({
           }}
         >
           <ExternalLink size={14} />
-          Connect {displayName}
+          Conectar {displayName}
         </button>
       )}
       <button
@@ -210,7 +210,7 @@ function OAuthPanel({
         className="text-xs self-start"
         style={{ color: 'var(--color-text-tertiary)' }}
       >
-        Skip for now
+        Saltar por ahora
       </button>
     </div>
   );
@@ -230,8 +230,7 @@ function LocalPanel({
   return (
     <div className="flex flex-col gap-4">
       <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-        {displayName} reads data directly from your Mac. Make sure the app is installed and
-        Full Disk Access is granted to Ultron in System Settings.
+        {displayName} lee los datos directamente de tu Mac. Comprueba que la app está instalada y que Ultron tiene Acceso total al disco en Ajustes del Sistema.
       </p>
       <div
         className="px-4 py-3 rounded-lg text-sm"
@@ -240,8 +239,7 @@ function LocalPanel({
           color: 'var(--color-text-secondary)',
         }}
       >
-        <strong>System Settings</strong> → Privacy &amp; Security → Full Disk Access →
-        enable Ultron
+        <strong>Ajustes del Sistema</strong> → Privacidad y seguridad → Acceso total al disco → activa Ultron
       </div>
       <button
         onClick={() => onConnect({})}
@@ -255,14 +253,14 @@ function LocalPanel({
         }}
       >
         {isConnecting && <Loader2 size={14} className="animate-spin" />}
-        Check Access
+        Comprobar acceso
       </button>
       <button
         onClick={onSkip}
         className="text-xs self-start"
         style={{ color: 'var(--color-text-tertiary)' }}
       >
-        Skip for now
+        Saltar por ahora
       </button>
     </div>
   );
@@ -372,7 +370,7 @@ function StepByStepPanel({
                 textDecoration: 'underline',
               }}
             >
-              {step.urlLabel || 'Open'} &rarr;
+              {step.urlLabel || 'Abrir'} &rarr;
             </a>
           )}
         </div>
@@ -438,7 +436,7 @@ function StepByStepPanel({
         fontSize: 11, color: 'var(--color-text-secondary)',
         marginBottom: 12, textAlign: 'center',
       }}>
-        Read-only access &middot; No data leaves your device
+        Acceso de solo lectura &middot; Ningún dato sale de tu dispositivo
       </div>
 
       <div style={{ display: 'flex', gap: 8 }}>
@@ -454,7 +452,7 @@ function StepByStepPanel({
             cursor: 'pointer',
           }}
         >
-          {isConnecting ? 'Connecting...' : `Connect ${connector.display_name}`}
+          {isConnecting ? 'Conectando...' : `Conectar ${connector.display_name}`}
         </button>
         <button
           onClick={onSkip}
@@ -467,7 +465,7 @@ function StepByStepPanel({
             cursor: 'pointer',
           }}
         >
-          Skip
+          Saltar
         </button>
       </div>
     </div>
@@ -534,7 +532,7 @@ export function SourceConnectFlow({
       <div className="w-48 shrink-0 flex flex-col gap-1 py-1">
         <p className="text-xs font-semibold uppercase tracking-wider mb-2"
           style={{ color: 'var(--color-text-tertiary)' }}>
-          Sources
+          Fuentes
         </p>
         {entries.map((entry, idx) => {
           const card = SOURCE_CATALOG.find((c) => c.connector_id === entry.id);
@@ -579,7 +577,7 @@ export function SourceConnectFlow({
               <div className="flex items-center gap-2 text-sm"
                 style={{ color: 'var(--color-accent)' }}>
                 <CheckCircle2 size={18} />
-                Connected
+                Conectado
               </div>
             ) : activeCard.steps ? (
               <StepByStepPanel
@@ -618,7 +616,7 @@ export function SourceConnectFlow({
           <div className="flex flex-col items-center justify-center flex-1 gap-3">
             <CheckCircle2 size={32} style={{ color: 'var(--color-accent)' }} />
             <p className="text-base font-semibold" style={{ color: 'var(--color-text)' }}>
-              All sources configured
+              Todas las fuentes configuradas
             </p>
           </div>
         )}
@@ -630,7 +628,7 @@ export function SourceConnectFlow({
               className="w-full py-3 px-4 rounded-xl font-semibold text-sm transition-all"
               style={{ background: 'var(--color-accent)', color: 'var(--color-on-accent)' }}
             >
-              Continue →
+              Continuar →
             </button>
           </div>
         )}

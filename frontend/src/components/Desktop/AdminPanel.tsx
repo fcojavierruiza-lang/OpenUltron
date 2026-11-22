@@ -304,7 +304,7 @@ export function AdminPanel({ apiUrl }: { apiUrl: string }) {
   if (loading) {
     return (
       <div style={styles.container}>
-        <div style={styles.loading}>Loading system status...</div>
+        <div style={styles.loading}>Cargando el estado del sistema...</div>
       </div>
     );
   }
@@ -317,18 +317,18 @@ export function AdminPanel({ apiUrl }: { apiUrl: string }) {
         : styles.healthDotUnhealthy;
 
   const healthLabel =
-    healthy === null ? 'Unknown' : healthy ? 'Healthy' : 'Unhealthy';
+    healthy === null ? 'Desconocido' : healthy ? 'Correcto' : 'Con problemas';
 
   return (
     <div style={styles.container}>
-      <div style={styles.header}>Admin Panel</div>
+      <div style={styles.header}>Panel de administración</div>
 
       {error && <div style={styles.error}>{error}</div>}
 
       <div style={styles.grid}>
         {/* Health & Engine */}
         <div style={styles.card}>
-          <div style={styles.cardTitle}>System Health</div>
+          <div style={styles.cardTitle}>Estado del sistema</div>
           <div style={{ ...styles.row, marginBottom: 8 }}>
             <div style={styles.healthStatus}>
               <span style={{ ...styles.healthDot, ...healthDotStyle }} />
@@ -336,28 +336,28 @@ export function AdminPanel({ apiUrl }: { apiUrl: string }) {
             </div>
           </div>
           <div style={styles.row}>
-            <span style={styles.label}>Engine</span>
+            <span style={styles.label}>Motor</span>
             <span style={styles.value}>{serverInfo?.engine || 'N/A'}</span>
           </div>
           <div style={styles.row}>
-            <span style={styles.label}>Model</span>
+            <span style={styles.label}>Modelo</span>
             <span style={styles.value}>{serverInfo?.model || 'N/A'}</span>
           </div>
           <div style={styles.row}>
-            <span style={styles.label}>Agent</span>
+            <span style={styles.label}>Agente</span>
             <span style={styles.value}>{serverInfo?.agent || 'N/A'}</span>
           </div>
         </div>
 
         {/* System Info */}
         <div style={styles.card}>
-          <div style={styles.cardTitle}>System Info</div>
+          <div style={styles.cardTitle}>Información del sistema</div>
           <div style={styles.row}>
-            <span style={styles.label}>Version</span>
+            <span style={styles.label}>Versión</span>
             <span style={styles.value}>{serverInfo?.version || '0.1.0'}</span>
           </div>
           <div style={styles.row}>
-            <span style={styles.label}>Uptime</span>
+            <span style={styles.label}>Tiempo activo</span>
             <span style={styles.value}>
               {serverInfo?.uptime_seconds !== undefined
                 ? formatUptime(serverInfo.uptime_seconds)
@@ -380,7 +380,7 @@ export function AdminPanel({ apiUrl }: { apiUrl: string }) {
               onClick={handleStart}
               disabled={commandRunning}
             >
-              Start Server
+              Iniciar servidor
             </button>
             <button
               style={{
@@ -391,7 +391,7 @@ export function AdminPanel({ apiUrl }: { apiUrl: string }) {
               onClick={handleStop}
               disabled={commandRunning}
             >
-              Stop Server
+              Detener servidor
             </button>
           </div>
 
@@ -404,14 +404,14 @@ export function AdminPanel({ apiUrl }: { apiUrl: string }) {
       {/* Agent Registry */}
       {agents.length > 0 && (
         <div style={styles.card}>
-          <div style={styles.cardTitle}>Agent Registry ({agents.length})</div>
+          <div style={styles.cardTitle}>Registro de agentes ({agents.length})</div>
           <table style={styles.agentTable}>
             <thead>
               <tr>
-                <th style={styles.th}>Name</th>
-                <th style={styles.th}>Key</th>
-                <th style={styles.th}>Tools</th>
-                <th style={styles.th}>Description</th>
+                <th style={styles.th}>Nombre</th>
+                <th style={styles.th}>Clave</th>
+                <th style={styles.th}>Herramientas</th>
+                <th style={styles.th}>Descripción</th>
               </tr>
             </thead>
             <tbody>
@@ -428,7 +428,7 @@ export function AdminPanel({ apiUrl }: { apiUrl: string }) {
                         ...(agent.accepts_tools ? styles.badgeTrue : styles.badgeFalse),
                       }}
                     >
-                      {agent.accepts_tools ? 'Yes' : 'No'}
+                      {agent.accepts_tools ? 'Sí' : 'No'}
                     </span>
                   </td>
                   <td style={{ ...styles.td, color: '#a6adc8', fontSize: 12 }}>
@@ -443,9 +443,9 @@ export function AdminPanel({ apiUrl }: { apiUrl: string }) {
 
       {agents.length === 0 && !loading && (
         <div style={styles.card}>
-          <div style={styles.cardTitle}>Agent Registry</div>
+          <div style={styles.cardTitle}>Registro de agentes</div>
           <div style={{ color: '#a6adc8', fontSize: 13, padding: '8px 0' }}>
-            No agents registered or server not reachable.
+            No hay agentes registrados o no se puede acceder al servidor.
           </div>
         </div>
       )}

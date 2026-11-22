@@ -9,12 +9,12 @@ interface Props {
 function formatRelativeTime(timestamp: number): string {
   const diff = Date.now() - timestamp;
   const minutes = Math.floor(diff / 60000);
-  if (minutes < 1) return 'Just now';
-  if (minutes < 60) return `${minutes}m ago`;
+  if (minutes < 1) return 'Ahora mismo';
+  if (minutes < 60) return `hace ${minutes} min`;
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
+  if (hours < 24) return `hace ${hours} h`;
   const days = Math.floor(hours / 24);
-  if (days < 7) return `${days}d ago`;
+  if (days < 7) return `hace ${days} d`;
   return new Date(timestamp).toLocaleDateString();
 }
 
@@ -37,7 +37,7 @@ export function ConversationList({ searchQuery }: Props) {
   if (filtered.length === 0) {
     return (
       <div className="px-3 py-8 text-center text-xs" style={{ color: 'var(--color-text-tertiary)' }}>
-        {searchQuery ? 'No matching chats' : 'No conversations yet'}
+        {searchQuery ? 'Ningún chat coincide' : 'Aún no hay conversaciones'}
       </div>
     );
   }
@@ -95,8 +95,8 @@ export function ConversationList({ searchQuery }: Props) {
               onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--color-text-tertiary)')}
               title={
                 isStreaming
-                  ? 'Stop generating before deleting this conversation'
-                  : 'Delete conversation'
+                  ? 'Detén la respuesta antes de borrar esta conversación'
+                  : 'Borrar conversación'
               }
             >
               <Trash2 size={14} />

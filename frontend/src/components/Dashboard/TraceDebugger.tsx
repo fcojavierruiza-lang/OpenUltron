@@ -60,7 +60,7 @@ function TraceCard({ trace, isActive, onClick }: { trace: TraceSummary; isActive
       onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.background = 'transparent'; }}
     >
       <div className="text-sm truncate mb-1" style={{ color: 'var(--color-text)' }}>
-        {trace.query || 'Untitled query'}
+        {trace.query || 'Consulta sin título'}
       </div>
       <div className="flex items-center gap-2 text-[11px]" style={{ color: 'var(--color-text-tertiary)' }}>
         <span>{trace.steps.length} steps</span>
@@ -132,7 +132,7 @@ export function TraceDebugger() {
       setTraces(data.traces || []);
       setError(null);
     } catch {
-      setError('Cannot load traces');
+      setError('No se pueden cargar las trazas');
     }
   }, []);
 
@@ -147,7 +147,7 @@ export function TraceDebugger() {
       <div className="hud-panel p-6">
         <h3 className="hud-label flex items-center gap-2 mb-4">
           <GitBranch size={12} style={{ color: 'var(--color-accent)' }} />
-          Trace Debugger
+          Depurador de trazas
         </h3>
         <div className="h-48 flex items-center justify-center text-sm" style={{ color: 'var(--color-text-tertiary)' }}>
           <span className="hud-mono">{error}</span>
@@ -160,12 +160,12 @@ export function TraceDebugger() {
     <div className="hud-panel p-6">
       <h3 className="hud-label flex items-center gap-2 mb-4">
         <GitBranch size={12} style={{ color: 'var(--color-accent)' }} />
-        Trace Debugger
+        Depurador de trazas
       </h3>
 
       {traces.length === 0 ? (
         <div className="h-48 flex items-center justify-center text-sm" style={{ color: 'var(--color-text-tertiary)' }}>
-          No traces yet. Start making queries to see them here.
+          Aún no hay trazas. Haz alguna consulta para verlas aquí.
         </div>
       ) : (
         <div className="flex gap-4 h-80">
@@ -194,7 +194,7 @@ export function TraceDebugger() {
               </div>
             ) : (
               <div className="h-full flex items-center justify-center text-sm" style={{ color: 'var(--color-text-tertiary)' }}>
-                Select a trace to view details
+                Selecciona una traza para ver los detalles
               </div>
             )}
           </div>

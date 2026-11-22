@@ -221,7 +221,7 @@ export function LearningCurve({ apiUrl }: { apiUrl: string }) {
   if (loading && !stats) {
     return (
       <div style={styles.container}>
-        <div style={styles.loading}>Loading learning data...</div>
+        <div style={styles.loading}>Cargando datos de aprendizaje...</div>
       </div>
     );
   }
@@ -229,7 +229,7 @@ export function LearningCurve({ apiUrl }: { apiUrl: string }) {
   if (error && !stats) {
     return (
       <div style={styles.container}>
-        <div style={styles.header}>Learning Curve</div>
+        <div style={styles.header}>Curva de aprendizaje</div>
         <div style={styles.error}>{error}</div>
       </div>
     );
@@ -248,53 +248,53 @@ export function LearningCurve({ apiUrl }: { apiUrl: string }) {
 
   return (
     <div style={styles.container}>
-      <div style={styles.header}>Learning Curve</div>
+      <div style={styles.header}>Curva de aprendizaje</div>
 
       {error && <div style={styles.error}>{error}</div>}
 
       {/* Policy config + counters */}
       <div style={styles.grid}>
         <div style={styles.card}>
-          <div style={styles.cardTitle}>Policy Config</div>
+          <div style={styles.cardTitle}>Configuración de la política</div>
           <div style={styles.row}>
-            <span style={styles.label}>Policy</span>
+            <span style={styles.label}>Política</span>
             <span style={styles.value}>{policyConfig?.name ?? 'unknown'}</span>
           </div>
           <div style={styles.row}>
-            <span style={styles.label}>Status</span>
+            <span style={styles.label}>Estado</span>
             <span
               style={{
                 ...styles.badge,
                 ...(policyConfig?.enabled ? styles.badgeEnabled : styles.badgeDisabled),
               }}
             >
-              {policyConfig?.enabled ? 'Enabled' : 'Disabled'}
+              {policyConfig?.enabled ? 'Activado' : 'Desactivado'}
             </span>
           </div>
           <div style={styles.row}>
-            <span style={styles.label}>Update interval</span>
+            <span style={styles.label}>Intervalo de actualización</span>
             <span style={styles.value}>{policyConfig?.update_interval ?? 0}s</span>
           </div>
         </div>
 
         <div style={styles.card}>
-          <div style={styles.cardTitle}>Counters</div>
+          <div style={styles.cardTitle}>Contadores</div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
             <div>
               <div style={styles.statNumber}>{stats?.total_traces ?? 0}</div>
-              <div style={styles.statLabel}>Total traces</div>
+              <div style={styles.statLabel}>Trazas totales</div>
             </div>
             <div>
               <div style={styles.statNumber}>{stats?.total_updates ?? 0}</div>
-              <div style={styles.statLabel}>Policy updates</div>
+              <div style={styles.statLabel}>Actualizaciones de la política</div>
             </div>
             <div>
               <div style={styles.statNumber}>{stats?.icl_example_count ?? 0}</div>
-              <div style={styles.statLabel}>ICL examples</div>
+              <div style={styles.statLabel}>Ejemplos ICL</div>
             </div>
             <div>
               <div style={styles.statNumber}>{stats?.discovered_skills_count ?? 0}</div>
-              <div style={styles.statLabel}>Discovered skills</div>
+              <div style={styles.statLabel}>Habilidades descubiertas</div>
             </div>
           </div>
         </div>
@@ -303,7 +303,7 @@ export function LearningCurve({ apiUrl }: { apiUrl: string }) {
       {/* Accuracy / latency chart */}
       {chartData.length > 0 && (
         <div style={styles.chartContainer}>
-          <div style={styles.cardTitle}>Routing Accuracy Over Time</div>
+          <div style={styles.cardTitle}>Precisión del enrutado a lo largo del tiempo</div>
           <ResponsiveContainer width="100%" height={280}>
             <LineChart data={chartData} margin={{ top: 8, right: 16, bottom: 8, left: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#45475a" />
@@ -373,13 +373,13 @@ export function LearningCurve({ apiUrl }: { apiUrl: string }) {
       {/* GRPO routing weights */}
       {isGrpo && (policy?.routing_weights ?? []).length > 0 && (
         <div style={styles.card}>
-          <div style={styles.cardTitle}>GRPO Routing Weights</div>
+          <div style={styles.cardTitle}>Pesos de enrutado GRPO</div>
           <table style={styles.table}>
             <thead>
               <tr>
-                <th style={styles.th}>Query Class</th>
-                <th style={styles.th}>Model</th>
-                <th style={styles.th}>Weight</th>
+                <th style={styles.th}>Tipo de consulta</th>
+                <th style={styles.th}>Modelo</th>
+                <th style={styles.th}>Peso</th>
               </tr>
             </thead>
             <tbody>
@@ -408,13 +408,13 @@ export function LearningCurve({ apiUrl }: { apiUrl: string }) {
       {/* Bandit arm stats */}
       {isBandit && (policy?.bandit_arms ?? []).length > 0 && (
         <div style={{ ...styles.card, marginTop: 16 }}>
-          <div style={styles.cardTitle}>Bandit Arm Statistics</div>
+          <div style={styles.cardTitle}>Estadísticas de brazos (bandit)</div>
           <table style={styles.table}>
             <thead>
               <tr>
-                <th style={styles.th}>Model</th>
-                <th style={styles.th}>Pulls</th>
-                <th style={styles.th}>Mean Reward</th>
+                <th style={styles.th}>Modelo</th>
+                <th style={styles.th}>Tiradas</th>
+                <th style={styles.th}>Recompensa media</th>
                 <th style={styles.th}>UCB</th>
               </tr>
             </thead>

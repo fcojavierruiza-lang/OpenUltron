@@ -39,7 +39,7 @@ describe('connector lifecycle status', () => {
   it('disables sync while another connector lifecycle action is active', () => {
     const html = renderStatus(baseStatus, true);
 
-    expect(html).toContain('Sync Now');
+    expect(html).toContain('Sincronizar ahora');
     expect(html).toMatch(/<button[^>]*disabled/);
   });
 });

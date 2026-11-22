@@ -44,13 +44,13 @@ export function Layout() {
             className="w-1.5 h-1.5 rounded-full shrink-0"
             style={{ background: 'var(--color-error)' }}
           />
-          <span>Cannot reach Ultron backend</span>
+          <span>No se puede conectar con el servidor de Ultron</span>
           <button
             onClick={() => navigate('/settings')}
             className="text-sm underline cursor-pointer ml-auto shrink-0"
             style={{ color: 'var(--color-accent)' }}
           >
-            Change URL
+            Cambiar URL
           </button>
         </div>
       )}

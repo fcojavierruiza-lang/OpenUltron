@@ -16,7 +16,7 @@ describe('read-aloud feedback', () => {
       available: true,
       state: 'idle',
       speakingId: null,
-      error: 'Playback failed',
+      error: 'Error de reproducción',
       errorId: 'failed-message',
       speak: vi.fn(async () => {}),
       stop: vi.fn(),
@@ -32,7 +32,7 @@ describe('read-aloud feedback', () => {
     );
 
     expect(failed).toContain('role="alert"');
-    expect(failed).toContain('Playback failed');
-    expect(other).not.toContain('Playback failed');
+    expect(failed).toContain('Error de reproducción');
+    expect(other).not.toContain('Error de reproducción');
   });
 });

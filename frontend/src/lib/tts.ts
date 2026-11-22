@@ -129,7 +129,7 @@ export const useTtsStore = create<TtsStore>((set, get) => ({
       el.onerror = () => {
         if (mine !== token) return;
         teardown();
-        set({ state: 'idle', speakingId: null, error: 'Playback failed', errorId: id });
+        set({ state: 'idle', speakingId: null, error: 'Error de reproducción', errorId: id });
       };
 
       await el.play();
@@ -141,7 +141,7 @@ export const useTtsStore = create<TtsStore>((set, get) => ({
       set({
         state: 'idle',
         speakingId: null,
-        error: err instanceof Error ? err.message : 'Speech synthesis failed',
+        error: err instanceof Error ? err.message : 'Error al generar la voz',
         errorId: id,
       });
     }

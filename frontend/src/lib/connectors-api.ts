@@ -13,14 +13,14 @@ import type { ConnectorInfo, SyncStatus, ConnectRequest, ConnectResponse } from 
 
 export async function listConnectors(): Promise<ConnectorInfo[]> {
   const res = await apiFetch('/v1/connectors');
-  if (!res.ok) throw new Error(`Failed to list connectors: ${res.status}`);
+  if (!res.ok) throw new Error(`No se han podido listar los conectores: ${res.status}`);
   const data = await res.json();
   return data.connectors || [];
 }
 
 export async function getConnector(id: string): Promise<ConnectorInfo> {
   const res = await apiFetch(`/v1/connectors/${encodeURIComponent(id)}`);
-  if (!res.ok) throw new Error(`Failed to get connector ${id}: ${res.status}`);
+  if (!res.ok) throw new Error(`No se ha podido obtener el conector ${id}: ${res.status}`);
   return res.json();
 }
 
@@ -34,7 +34,7 @@ export async function connectSource(id: string, req: ConnectRequest): Promise<Co
     // Surface the backend's actionable detail (e.g. malformed Client ID /
     // Secret) instead of a bare status code so the UI can render it.
     const err = await res.json().catch(() => ({ detail: res.statusText }));
-    throw new Error(err.detail || `Failed to connect ${id}: ${res.status}`);
+    throw new Error(err.detail || `No se ha podido conectar ${id}: ${res.status}`);
   }
   return res.json();
 }
@@ -60,7 +60,7 @@ export function startServerOAuth(id: string, oauthStartPath?: string): Promise<v
     }, 2000);
     const timer = setTimeout(() => {
       clearInterval(interval);
-      reject(new Error('Authorization timed out — please try again.'));
+      reject(new Error('La autorización ha caducado. Inténtalo de nuevo.'));
     }, 180000);
   });
 }
@@ -86,7 +86,7 @@ export async function disconnectSource(
   if (!res.ok) {
     const err = await res.json().catch(() => ({ detail: res.statusText }));
     throw new ConnectorApiError(
-      err.detail || `Failed to disconnect ${id}: ${res.status}`,
+      err.detail || `No se ha podido desconectar ${id}: ${res.status}`,
       res.status,
     );
   }
@@ -146,7 +146,7 @@ export async function disconnectSourceUntilComplete(
 
 export async function getSyncStatus(id: string): Promise<SyncStatus> {
   const res = await apiFetch(`/v1/connectors/${encodeURIComponent(id)}/sync`);
-  if (!res.ok) throw new Error(`Failed to get sync status for ${id}: ${res.status}`);
+  if (!res.ok) throw new Error(`No se ha podido obtener el estado de sincronización de ${id}: ${res.status}`);
   return res.json();
 }
 
@@ -156,7 +156,7 @@ export async function triggerSync(id: string): Promise<{ connector_id: string; c
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({ detail: res.statusText }));
-    throw new Error(err.detail || `Sync failed: ${res.status}`);
+    throw new Error(err.detail || `Error de sincronización: ${res.status}`);
   }
   return res.json();
 }

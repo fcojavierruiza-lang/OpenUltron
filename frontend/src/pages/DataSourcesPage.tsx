@@ -127,7 +127,7 @@ function InlineConnectForm({
           cursor: submitDisabled ? 'default' : 'pointer',
         }}
       >
-        Connect
+        Conectar
       </button>
     </div>
   );
@@ -186,7 +186,7 @@ function GenericConnectPanel({
       return (
         <div>
           <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginBottom: 10 }}>
-            Add one RSS or Atom feed URL per line.
+            Añade una URL de feed RSS o Atom por línea.
           </div>
           <textarea
             value={feedUrls}
@@ -200,7 +200,7 @@ function GenericConnectPanel({
             disabled={loading || disabled || feeds.length === 0}
             style={{ width: '100%', padding: 8, background: loading || disabled || feeds.length === 0 ? 'var(--color-disabled-bg)' : 'var(--color-accent-purple)', color: 'var(--color-on-accent)', border: 'none', borderRadius: 6, fontSize: 12, cursor: loading || disabled || feeds.length === 0 ? 'default' : 'pointer' }}
           >
-            {loading ? 'Connecting...' : 'Save feeds'}
+            {loading ? 'Conectando...' : 'Guardar feeds'}
           </button>
         </div>
       );
@@ -208,8 +208,7 @@ function GenericConnectPanel({
     return (
       <div>
         <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginBottom: 10 }}>
-          {displayName} reads data directly from this device. Grant access if
-          prompted, then connect.
+          {displayName} lee los datos directamente de este dispositivo. Da acceso si te lo pide y después conecta.
         </div>
         <button
           onClick={() => onConnect({})}
@@ -222,7 +221,7 @@ function GenericConnectPanel({
             cursor: loading || disabled ? 'default' : 'pointer',
           }}
         >
-          {loading ? 'Connecting...' : `Connect ${displayName}`}
+          {loading ? 'Conectando...' : `Conectar ${displayName}`}
         </button>
       </div>
     );
@@ -232,15 +231,15 @@ function GenericConnectPanel({
     return (
       <div>
         <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginBottom: 10 }}>
-          Enter your {displayName} API token.
+          Introduce tu {displayName} token de la API.
         </div>
         <InlineConnectForm
           fields={connectorId === 'weather'
             ? [
-                { name: 'token', placeholder: 'OpenWeather API key', type: 'password' },
-                { name: 'location', placeholder: 'City, country (for example: Boston,US)', type: 'text' },
+                { name: 'token', placeholder: 'Clave API de OpenWeather', type: 'password' },
+                { name: 'location', placeholder: 'Ciudad, país (por ejemplo: Madrid,ES)', type: 'text' },
               ]
-            : [{ name: 'token', placeholder: `${displayName} API token`, type: 'password' }]}
+            : [{ name: 'token', placeholder: `${displayName}: token de la API`, type: 'password' }]}
           loading={loading}
           disabled={disabled}
           onSubmit={onConnect}
@@ -254,8 +253,8 @@ function GenericConnectPanel({
     return (
       <div>
         <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginBottom: 10 }}>
-          OAuth app credentials are already configured. Continue directly to
-          {oauthSetup.provider ? ` ${oauthSetup.provider}` : ' the provider'} sign-in.
+          Las credenciales OAuth ya están configuradas. Continúa directamente al inicio de sesión de
+          {oauthSetup.provider ? ` ${oauthSetup.provider}` : ' el proveedor'}.
         </div>
         <button
           onClick={onOAuthStart}
@@ -268,7 +267,7 @@ function GenericConnectPanel({
             cursor: loading || disabled ? 'default' : 'pointer',
           }}
         >
-          {loading ? 'Connecting...' : `Continue with ${oauthSetup.provider || displayName}`}
+          {loading ? 'Conectando...' : `Continuar con ${oauthSetup.provider || displayName}`}
         </button>
       </div>
     );
@@ -292,12 +291,12 @@ function GenericConnectPanel({
             rel="noopener noreferrer"
             style={{ color: 'var(--color-accent)', fontSize: 11, textDecoration: 'underline' }}
           >
-            Open developer dashboard &rarr;
+            Abrir panel de desarrollador &rarr;
           </a>
         </div>
       )}
       <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginBottom: 10 }}>
-        Paste the Client ID and Client Secret from the app you created above.
+        Pega el Client ID y el Client Secret de la app que has creado arriba.
       </div>
       <InlineConnectForm
         fields={[
@@ -340,15 +339,15 @@ function UploadForm({ onDone }: { onDone?: () => void }) {
       });
       if (!res.ok) {
         const err = await res.json().catch(() => ({ detail: res.statusText }));
-        throw new Error(err.detail || `Upload failed: ${res.status}`);
+        throw new Error(err.detail || `Error al subir: ${res.status}`);
       }
       const data = await res.json();
-      setResult(`Added ${data.chunks_added} chunk${data.chunks_added !== 1 ? 's' : ''} to knowledge base`);
+      setResult(`Añadidos ${data.chunks_added} fragmento${data.chunks_added !== 1 ? 's' : ''} a la base de conocimiento`);
       setTitle('');
       setContent('');
       onDone?.();
     } catch (err: any) {
-      setError(err.message || 'Upload failed');
+      setError(err.message || 'Error al subir');
     } finally {
       setBusy(false);
     }
@@ -371,15 +370,15 @@ function UploadForm({ onDone }: { onDone?: () => void }) {
       });
       if (!res.ok) {
         const err = await res.json().catch(() => ({ detail: res.statusText }));
-        throw new Error(err.detail || `Upload failed: ${res.status}`);
+        throw new Error(err.detail || `Error al subir: ${res.status}`);
       }
       const data = await res.json();
-      setResult(`Added ${data.chunks_added} chunk${data.chunks_added !== 1 ? 's' : ''} from ${files.length} file${files.length !== 1 ? 's' : ''}`);
+      setResult(`Añadidos ${data.chunks_added} fragmento${data.chunks_added !== 1 ? 's' : ''} de ${files.length} archivo${files.length !== 1 ? 's' : ''}`);
       setFiles([]);
       setTitle('');
       onDone?.();
     } catch (err: any) {
-      setError(err.message || 'Upload failed');
+      setError(err.message || 'Error al subir');
     } finally {
       setBusy(false);
     }
@@ -408,10 +407,10 @@ function UploadForm({ onDone }: { onDone?: () => void }) {
       <div style={{ display: 'flex', gap: 4, marginBottom: 10,
         background: 'var(--color-bg)', borderRadius: 6, padding: 2 }}>
         <button style={tabStyle(tab === 'paste')} onClick={() => setTab('paste')}>
-          Paste Text
+          Pegar texto
         </button>
         <button style={tabStyle(tab === 'upload')} onClick={() => setTab('upload')}>
-          Upload Files
+          Subir archivos
         </button>
       </div>
 
@@ -419,7 +418,7 @@ function UploadForm({ onDone }: { onDone?: () => void }) {
       <input
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder="Title (optional)"
+        placeholder="Título (opcional)"
         style={inputStyle}
       />
 
@@ -428,7 +427,7 @@ function UploadForm({ onDone }: { onDone?: () => void }) {
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="Paste your text here..."
+            placeholder="Pega aquí tu texto..."
             rows={6}
             style={{
               ...inputStyle,
@@ -447,7 +446,7 @@ function UploadForm({ onDone }: { onDone?: () => void }) {
               borderRadius: 6, fontSize: 12, cursor: 'pointer',
             }}
           >
-            {busy ? 'Adding...' : 'Add to Knowledge Base'}
+            {busy ? 'Añadiendo...' : 'Añadir a la base de conocimiento'}
           </button>
         </>
       )}
@@ -479,7 +478,7 @@ function UploadForm({ onDone }: { onDone?: () => void }) {
               borderRadius: 6, fontSize: 12, cursor: 'pointer',
             }}
           >
-            {busy ? 'Uploading...' : 'Upload & Index'}
+            {busy ? 'Subiendo...' : 'Subir e indexar'}
           </button>
         </>
       )}
@@ -567,7 +566,7 @@ function GmailOAuthAdvanced({
           textDecoration: 'underline',
         }}
       >
-        {open ? 'Hide advanced' : 'Advanced: Connect with Google OAuth'}
+        {open ? 'Ocultar opciones avanzadas' : 'Avanzado: conectar con Google OAuth'}
       </button>
       {open && (
         <div
@@ -580,17 +579,16 @@ function GmailOAuthAdvanced({
           }}
         >
           <div style={{ fontSize: 11, color: 'var(--color-text-tertiary)', marginBottom: 8 }}>
-            For developers with an existing Google Cloud project. Enable the
-            Gmail API and create a Desktop OAuth client at{' '}
+            Para desarrolladores con un proyecto de Google Cloud. Activa la API de Gmail y crea un cliente OAuth de escritorio en{' '}
             <a
               href="https://console.cloud.google.com/apis/credentials"
               target="_blank"
               rel="noopener noreferrer"
               style={{ color: 'var(--color-accent)', textDecoration: 'underline' }}
             >
-              Google Cloud Credentials →
+              Credenciales de Google Cloud →
             </a>{' '}
-            then paste the Client ID and Client Secret below.
+            y pega abajo el Client ID y el Client Secret.
           </div>
           <InlineConnectForm
             fields={[
@@ -617,18 +615,18 @@ function formatTimeAgo(iso: string | null | undefined): string | null {
   const t = new Date(iso).getTime();
   if (Number.isNaN(t)) return null;
   const diffSec = (Date.now() - t) / 1000;
-  if (diffSec < 30) return 'just now';
-  if (diffSec < 60) return 'less than a min ago';
+  if (diffSec < 30) return 'ahora mismo';
+  if (diffSec < 60) return 'hace menos de un minuto';
   if (diffSec < 3600) {
     const m = Math.round(diffSec / 60);
-    return `${m} min${m === 1 ? '' : 's'} ago`;
+    return `hace ${m} min`;
   }
   if (diffSec < 86400) {
     const h = Math.round(diffSec / 3600);
-    return `${h} hr${h === 1 ? '' : 's'} ago`;
+    return `hace ${h} h`;
   }
   const d = Math.round(diffSec / 86400);
-  return `${d} day${d === 1 ? '' : 's'} ago`;
+  return `hace ${d} día${d === 1 ? '' : 's'}`;
 }
 
 /** Render how far back the corpus extends, given the oldest indexed
@@ -638,10 +636,10 @@ function formatBacklogRange(iso: string | null | undefined): string | null {
   const t = new Date(iso).getTime();
   if (Number.isNaN(t)) return null;
   const days = (Date.now() - t) / 86400_000;
-  if (days < 7) return 'past few days';
-  if (days < 30) return 'past month';
-  if (days < 90) return 'past 3 months';
-  if (days < 365) return 'past year';
+  if (days < 7) return 'últimos días';
+  if (days < 30) return 'último mes';
+  if (days < 90) return 'últimos 3 meses';
+  if (days < 365) return 'último año';
   const years = Math.round(days / 365);
   return `past ${years} year${years === 1 ? '' : 's'}`;
 }
@@ -672,7 +670,7 @@ export function SyncStatusDisplay({
       await triggerSync(connectorId);
       onSyncTriggered();
     } catch (err: any) {
-      setSyncError(err.message || 'Sync failed');
+      setSyncError(err.message || 'Error de sincronización');
     } finally {
       setSyncing(false);
     }
@@ -685,10 +683,10 @@ export function SyncStatusDisplay({
     return (
       <div>
         <div style={{ fontSize: 12, color: 'var(--color-warning)', marginBottom: 4 }}>
-          Disconnect pending — waiting for the active sync to stop.
+          Desconexión pendiente: esperando a que termine la sincronización.
         </div>
         <div style={{ fontSize: 10.5, color: 'var(--color-text-tertiary)' }}>
-          Indexed data will be cleaned up before this source disconnects.
+          Los datos indexados se borrarán antes de desconectar esta fuente.
         </div>
       </div>
     );
@@ -711,7 +709,7 @@ export function SyncStatusDisplay({
             cursor: syncing || disabled ? 'default' : 'pointer', fontWeight: 600,
             opacity: syncing || disabled ? 0.5 : 1,
           }}
-        >{syncing ? 'Retrying...' : 'Retry Sync'}</button>
+        >{syncing ? 'Reintentando...' : 'Reintentar sincronización'}</button>
       </div>
     );
   }
@@ -731,11 +729,11 @@ export function SyncStatusDisplay({
 
   // Actively syncing — single status line + reassurance line.
   if (sync?.state === 'syncing' || syncing) {
-    const rangeLabel = backlogRange ?? 'building corpus';
+    const rangeLabel = backlogRange ?? 'creando el índice';
     return (
       <div>
         <div style={{ fontSize: 11, color: 'var(--color-warning)', marginBottom: 4 }}>
-          Indexed{' '}
+          Indexados{' '}
           <span key={totalIndexed} className="sync-bump">
             {totalIndexed.toLocaleString()} {unitLabel}
           </span>{' '}
@@ -743,11 +741,11 @@ export function SyncStatusDisplay({
             ({rangeLabel})
           </span>{' '}
           <span style={{ color: 'var(--color-text-tertiary)' }}>
-            · Still indexing…
+            · Aún indexando…
           </span>
         </div>
         <div style={{ fontSize: 10.5, color: 'var(--color-text-tertiary)' }}>
-          Deep Research available now · results improve as more {unitLabel} are indexed
+          La investigación a fondo ya está disponible · los resultados mejoran cuantos más {unitLabel} se indexen
         </div>
       </div>
     );
@@ -758,13 +756,13 @@ export function SyncStatusDisplay({
   if (totalIndexed > 0) {
     const lastSyncLabel = formatTimeAgo(sync?.last_sync);
     const rangeLabel = isComplete
-      ? 'complete inbox'
+      ? 'bandeja completa'
       : backlogRange;
     return (
       <div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <span style={{ fontSize: 12, color: 'var(--color-success)' }}>
-            Indexed {totalIndexed.toLocaleString()} {unitLabel}
+            Indexados {totalIndexed.toLocaleString()} {unitLabel}
             {rangeLabel && (
               <span style={{ color: 'var(--color-text-tertiary)' }}>
                 {' '}({rangeLabel})
@@ -772,7 +770,7 @@ export function SyncStatusDisplay({
             )}
             {lastSyncLabel && (
               <span style={{ color: 'var(--color-text-tertiary)' }}>
-                {' · '}Last synced {lastSyncLabel}
+                {' · '}Última sincronización {lastSyncLabel}
               </span>
             )}
           </span>
@@ -806,8 +804,8 @@ export function SyncStatusDisplay({
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         <span style={{ fontSize: 12, color: 'var(--color-text-tertiary)' }}>
           {hasSynced
-            ? `Synced — 0 ${unitLabel} found`
-            : 'Connected — not synced yet'}
+            ? `Sincronizado — 0 ${unitLabel} found`
+            : 'Conectado, aún sin sincronizar'}
         </span>
         <button
           onClick={handleSync}
@@ -819,11 +817,11 @@ export function SyncStatusDisplay({
             cursor: syncing || disabled ? 'default' : 'pointer', fontWeight: 600,
             opacity: syncing || disabled ? 0.5 : 1,
           }}
-        >{syncing ? 'Syncing...' : hasSynced ? 'Re-sync' : 'Sync Now'}</button>
+        >{syncing ? 'Sincronizando...' : hasSynced ? 'Re-sync' : 'Sincronizar ahora'}</button>
       </div>
       {hasSynced && connectorId === 'slack' && (
         <div style={{ fontSize: 10, color: 'var(--color-text-tertiary)', marginTop: 4 }}>
-          Tip: invite the bot to channels with /invite @Ultron, then re-sync
+          Consejo: invita al bot a los canales con /invite @Ultron y vuelve a sincronizar
         </div>
       )}
       {syncError && (
@@ -937,7 +935,7 @@ function DataSourcesSection() {
       if (!(err instanceof DOMException && err.name === 'AbortError')) {
         setDisconnectError({
           id,
-          message: err instanceof Error ? err.message : 'Disconnect failed',
+          message: err instanceof Error ? err.message : 'Error al desconectar',
         });
       }
     } finally {
@@ -952,7 +950,7 @@ function DataSourcesSection() {
     if (loading || disconnectAbortRef.current) return;
     setLoading(true);
     setConnectingId(id);
-    setConnectStage('Connecting...');
+    setConnectStage('Conectando...');
     setConnectError('');
     try {
       const resp = req === null ? null : await connectSource(id, req);
@@ -964,11 +962,11 @@ function DataSourcesSection() {
       // and wait for the callback to flip the connector to connected. Without
       // this the connector would stay "pending" forever — the exact #512 bug.
       if (req === null || resp?.status === 'oauth_required') {
-        setConnectStage('Opening provider sign-in...');
+        setConnectStage('Abriendo el inicio de sesión del proveedor...');
         await startServerOAuth(id, resp?.oauth_start);
       }
 
-      setConnectStage('Connected! Starting sync...');
+      setConnectStage('¡Conectado! Iniciando la sincronización...');
 
       // Wait for connector to show as connected
       for (let i = 0; i < 20; i++) {
@@ -985,11 +983,11 @@ function DataSourcesSection() {
           })));
           break;
         }
-        setConnectStage(i < 5 ? 'Authenticating...' : 'Waiting for connection...');
+        setConnectStage(i < 5 ? 'Autenticando...' : 'Esperando la conexión...');
       }
 
       // Trigger sync
-      setConnectStage('Syncing data...');
+      setConnectStage('Sincronizando datos...');
       try {
         await triggerSync(id);
       } catch { /* sync may already be running */ }
@@ -1000,7 +998,7 @@ function DataSourcesSection() {
       loadConnectors();
       loadSyncStatuses();
     } catch (err: any) {
-      let errorMsg = err.message || 'Connection failed';
+      let errorMsg = err.message || 'Error de conexión';
       if (id === 'gmail_imap' && (errorMsg.includes('auth') || errorMsg.includes('credentials') || errorMsg.includes('LOGIN'))) {
         errorMsg = 'Invalid credentials — make sure you\'re using an App Password (16 characters), not your regular Gmail password.';
       }
@@ -1040,7 +1038,7 @@ function DataSourcesSection() {
   const connected = unifiedConnectors.filter((c) => c.connected);
   const notConnectedBase = unifiedConnectors.filter((c) => !c.connected);
   // Always show the upload card in the not-connected list (it has no backend connector)
-  const uploadEntry = { connector_id: 'upload', display_name: 'Upload / Paste', connected: false, chunks: 0, auth_type: 'local' };
+  const uploadEntry = { connector_id: 'upload', display_name: 'Subir / pegar', connected: false, chunks: 0, auth_type: 'local' };
   const notConnected = notConnectedBase.some((c) => c.connector_id === 'upload')
     ? notConnectedBase
     : [...notConnectedBase, uploadEntry];
@@ -1051,7 +1049,7 @@ function DataSourcesSection() {
       <div className="flex flex-col gap-5">
         <section>
           <div className="hud-label mb-2" style={{ color: 'var(--color-text-tertiary)' }}>
-            Loading sources…
+            Cargando fuentes…
           </div>
           <div className="flex flex-col gap-2">
             {[0, 1, 2, 3].map((i) => (
@@ -1078,7 +1076,7 @@ function DataSourcesSection() {
         <section>
           <div className="hud-label mb-2 flex items-center gap-2">
             <span style={{ display: 'inline-block', width: 6, height: 6, borderRadius: 999, background: 'var(--color-success)' }} />
-            Connected · {connected.length}
+            Conectado · {connected.length}
           </div>
           <div className="flex flex-col gap-2">
           {connected.map((c) => {
@@ -1114,7 +1112,7 @@ function DataSourcesSection() {
                     />
                     {disconnectError?.id === c.connector_id && (
                       <div style={{ fontSize: 11, color: 'var(--color-error)', marginTop: 4 }}>
-                        Disconnect failed: {disconnectError.message}
+                        Error al desconectar: {disconnectError.message}
                       </div>
                     )}
                   </div>
@@ -1134,8 +1132,8 @@ function DataSourcesSection() {
                     }}
                   >
                     {disconnectingId === c.connector_id
-                      ? sync?.state === 'stopping' ? 'Cleaning up…' : 'Disconnecting…'
-                      : sync?.state === 'stopping' ? 'Finish disconnect' : 'Disconnect'}
+                      ? sync?.state === 'stopping' ? 'Limpiando…' : 'Desconectando…'
+                      : sync?.state === 'stopping' ? 'Terminar desconexión' : 'Desconectar'}
                   </button>
                 </div>
               </div>
@@ -1150,7 +1148,7 @@ function DataSourcesSection() {
         <section>
           <div className="hud-label mb-2 flex items-center gap-2">
             <span style={{ display: 'inline-block', width: 6, height: 6, borderRadius: 999, background: 'var(--color-text-tertiary)' }} />
-            Available · {notConnected.length}
+            Disponible · {notConnected.length}
           </div>
           <div className="grid grid-cols-2 gap-2">
           {notConnected.map((c) => {
@@ -1180,18 +1178,18 @@ function DataSourcesSection() {
                       {meta?.display_name ?? c.display_name}
                     </div>
                     <div style={{ fontSize: 11, color: 'var(--color-text-tertiary)', marginTop: 2 }}>
-                      {meta?.description ?? 'Not connected'}
+                      {meta?.description ?? 'No conectado'}
                     </div>
                   </div>
                   <span style={{ color: 'var(--color-text-secondary)', fontSize: 12, fontWeight: 500 }}>
-                    {isExpanded ? '× Close' : '+ Add'}
+                    {isExpanded ? '× Cerrar' : '+ Añadir'}
                   </span>
                 </div>
 
                 {isExpanded && c.connector_id === 'upload' && (
                   <div style={{ borderTop: '1px solid var(--color-border)', padding: 12 }}>
                     <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginBottom: 10 }}>
-                      Paste text or upload files (.txt, .md, .pdf, .docx, .csv) to add them to your knowledge base.
+                      Pega texto o sube archivos (.txt, .md, .pdf, .docx, .csv) para añadirlos a tu base de conocimiento.
                     </div>
                     <UploadForm onDone={loadConnectors} />
                   </div>
@@ -1220,7 +1218,7 @@ function DataSourcesSection() {
                             rel="noopener noreferrer"
                             style={{ color: 'var(--color-accent)', fontSize: 11, textDecoration: 'underline' }}
                           >
-                            {step.urlLabel || 'Open'} &rarr;
+                            {step.urlLabel || 'Abrir'} &rarr;
                           </a>
                         )}
                       </div>
@@ -1243,7 +1241,7 @@ function DataSourcesSection() {
                     {meta?.troubleshooting && (
                       <details className="mt-2">
                         <summary className="text-[11px] cursor-pointer" style={{ color: 'var(--color-text-tertiary)' }}>
-                          Having trouble?
+                          ¿Tienes problemas?
                         </summary>
                         <ul className="mt-1 space-y-1">
                           {meta.troubleshooting.map((tip: string, i: number) => (
@@ -1275,7 +1273,7 @@ function DataSourcesSection() {
                         }}>
                           <div style={{
                             height: '100%', borderRadius: 2, background: 'var(--color-warning)',
-                            width: connectStage.includes('Sync') ? '75%' : connectStage.includes('Connected') ? '50%' : '25%',
+                            width: connectStage.includes('Sincroniz') ? '75%' : connectStage.includes('Conectado') ? '50%' : '25%',
                             transition: 'width 0.5s ease',
                           }} />
                         </div>
@@ -1351,23 +1349,23 @@ const MESSAGING_CHANNELS: MessagingChannelConfig[] = [
     type: 'slack',
     name: 'Slack',
     icon: '#',
-    description: 'DM your agent in any Slack workspace',
+    description: 'Escribe a tu agente por mensaje directo en cualquier espacio de Slack',
     setupSteps: [
-      '1. Go to api.slack.com/apps \u2192 click "Create New App" \u2192 choose "From an app manifest"',
-      '2. Select your workspace. When asked for the manifest format, choose JSON. Then paste the manifest below (click "Copy" to copy it):',
+      '1. Ve a api.slack.com/apps → pulsa «Create New App» → elige «From an app manifest»',
+      '2. Elige tu espacio de trabajo. Cuando te pida el formato del manifiesto, elige JSON. Después pega el manifiesto de abajo (pulsa «Copiar» para copiarlo):',
       'COPYABLE:{"display_information":{"name":"Ultron"},"features":{"app_home":{"home_tab_enabled":true,"messages_tab_enabled":true,"messages_tab_read_only_enabled":false},"bot_user":{"display_name":"Ultron","always_online":true}},"oauth_config":{"scopes":{"bot":["chat:write","im:write","im:read","im:history","mpim:read","mpim:history","users:read","channels:read","channels:history","channels:join","groups:read","groups:history","app_mentions:read"]}},"settings":{"event_subscriptions":{"bot_events":["message.im"]},"socket_mode_enabled":true}}',
-      '3. Click "Next" \u2192 review the summary \u2192 click "Create". Then go to "Install App" in the left sidebar \u2192 click "Install to Workspace" \u2192 click "Allow"',
-      '4. In the left sidebar, click "OAuth & Permissions". Copy the "Bot User OAuth Token" (starts with xoxb-...)',
-      '5. In the left sidebar, click "Basic Information" \u2192 scroll to "App-Level Tokens" \u2192 click "Generate Token and Scopes" \u2192 name it "socket" \u2192 click "Add Scope" \u2192 select "connections:write" \u2192 click "Generate" \u2192 copy the token (starts with xapp-...)',
-      '6. (Optional) Still in "Basic Information", scroll to "Display Information" \u2192 upload the Ultron icon as the app icon',
-      '7. Paste both tokens below and click Connect',
+      '3. Pulsa «Next» → revisa el resumen → pulsa «Create». Después ve a «Install App» en la barra lateral → pulsa «Install to Workspace» → «Allow»',
+      '4. En la barra lateral, pulsa «OAuth & Permissions». Copia el «Bot User OAuth Token» (empieza por xoxb-...)',
+      '5. En la barra lateral, pulsa «Basic Information» → baja hasta «App-Level Tokens» → pulsa «Generate Token and Scopes» → llámalo «socket» → pulsa «Add Scope» → elige «connections:write» → pulsa «Generate» → copia el token (empieza por xapp-...)',
+      '6. (Opcional) En «Basic Information», baja hasta «Display Information» → sube el icono de Ultron como icono de la app',
+      '7. Pega los dos tokens abajo y pulsa Conectar',
     ],
     fields: [
-      { key: 'bot_token', label: 'Bot Token', placeholder: 'xoxb-...', type: 'password', required: true },
-      { key: 'app_token', label: 'App Token', placeholder: 'xapp-...', type: 'password', required: true },
+      { key: 'bot_token', label: 'Token del bot', placeholder: 'xoxb-...', type: 'password', required: true },
+      { key: 'app_token', label: 'Token de la app', placeholder: 'xapp-...', type: 'password', required: true },
     ],
-    activeLabel: () => 'Connected to Slack',
-    howToUse: () => 'Open Slack and DM @Ultron to talk to your agent.',
+    activeLabel: () => 'Conectado a Slack',
+    howToUse: () => 'Abre Slack y escribe a @Ultron para hablar con tu agente.',
   },
 ];
 
@@ -1425,7 +1423,7 @@ function SendBlueSection({
           <div style={{ flex: 1 }}>
             <div style={{ fontWeight: 600, fontSize: 13 }}>iMessage + SMS</div>
             <div style={{ fontSize: 11, color: 'var(--color-success)' }}>
-              Active &mdash; text {(cfg.phone_number as string) || 'your number'} to chat
+              Activo &mdash; escribe al {(cfg.phone_number as string) || 'tu número'} para chatear
             </div>
           </div>
           <button
@@ -1437,7 +1435,7 @@ function SendBlueSection({
               border: '1px solid var(--color-border)',
               borderRadius: 4, cursor: 'pointer',
             }}
-          >Remove</button>
+          >Quitar</button>
         </div>
         {health && (
           <div style={{
@@ -1445,7 +1443,7 @@ function SendBlueSection({
             padding: '8px 14px', fontSize: 11,
             color: 'var(--color-text-secondary)',
           }}>
-            Webhook: {health.webhook_registered ? 'registered' : 'not registered'}
+            Webhook: {health.webhook_registered ? 'registered' : 'sin registrar'}
             {health.phone_number && ` \u2022 ${health.phone_number}`}
           </div>
         )}
@@ -1463,11 +1461,11 @@ function SendBlueSection({
   // Not active — setup wizard
   const steps = [
     {
-      title: 'Get SendBlue API keys',
+      title: 'Consigue las claves API de SendBlue',
       content: (
         <div>
           <div style={{ fontSize: 12, marginBottom: 8 }}>
-            SendBlue lets your agent send and receive iMessages and SMS. You need an account and API credentials.
+            SendBlue permite a tu agente enviar y recibir iMessages y SMS. Necesitas una cuenta y credenciales de la API.
           </div>
           <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
             <a
@@ -1476,7 +1474,7 @@ function SendBlueSection({
               rel="noopener noreferrer"
               style={{ color: 'var(--color-accent)', fontSize: 12, textDecoration: 'underline' }}
             >
-              1. Sign up at sendblue.co &rarr;
+              1. Regístrate en sendblue.co &rarr;
             </a>
           </div>
           <div style={{ marginBottom: 8 }}>
@@ -1486,26 +1484,26 @@ function SendBlueSection({
               rel="noopener noreferrer"
               style={{ color: 'var(--color-accent)', fontSize: 12, textDecoration: 'underline' }}
             >
-              2. Go to your API Credentials page &rarr;
+              2. Ve a tu página de credenciales de la API &rarr;
             </a>
           </div>
           <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 6 }}>
-            Copy the "API Key" and "API Secret" from the credentials page and paste them below.
+            Copia la «API Key» y el «API Secret» de la página de credenciales y pégalos abajo.
           </div>
           <input value={apiKey} onChange={(e) => setApiKey(e.target.value)}
-            placeholder="API Key" style={{ ...inputStyle, marginTop: 4 }} />
+            placeholder="Clave API" style={{ ...inputStyle, marginTop: 4 }} />
           <input value={apiSecret} onChange={(e) => setApiSecret(e.target.value)}
-            placeholder="API Secret" type="password" style={{ ...inputStyle, marginTop: 4 }} />
+            placeholder="Secreto de la API" type="password" style={{ ...inputStyle, marginTop: 4 }} />
         </div>
       ),
       canAdvance: apiKey.trim() && apiSecret.trim(),
     },
     {
-      title: 'Enter your phone number',
+      title: 'Introduce tu número de teléfono',
       content: (
         <div>
           <div style={{ fontSize: 12, marginBottom: 8 }}>
-            Which phone number should SendBlue use? This is the number people will text to reach your agent.
+            ¿Qué número debe usar SendBlue? Es el número al que la gente escribirá para hablar con tu agente.
           </div>
           <input value={phone} onChange={(e) => setPhone(e.target.value)}
             placeholder="+1XXXXXXXXXX" style={inputStyle} />
@@ -1514,11 +1512,11 @@ function SendBlueSection({
       canAdvance: phone.trim().length >= 10,
     },
     {
-      title: 'Set up webhook (ngrok tunnel)',
+      title: 'Configurar webhook (túnel de ngrok)',
       content: (
         <div>
           <div style={{ fontSize: 12, marginBottom: 8 }}>
-            SendBlue needs a public URL to send incoming messages to your local server. Use ngrok to create a tunnel.
+            SendBlue necesita una URL pública para enviar los mensajes a tu servidor local. Usa ngrok para crear un túnel.
           </div>
           <div style={{
             fontSize: 11, lineHeight: 1.6,
@@ -1528,9 +1526,9 @@ function SendBlueSection({
             borderRadius: 6,
             borderLeft: '3px solid var(--color-accent, var(--color-accent-purple))',
           }}>
-            <div><strong>1.</strong> Open a terminal and run: <code style={{ color: 'var(--color-accent)', background: 'var(--color-bg)', padding: '1px 4px', borderRadius: 3 }}>ngrok http 8000</code></div>
-            <div style={{ marginTop: 4 }}><strong>2.</strong> Copy the <code style={{ color: 'var(--color-accent)', background: 'var(--color-bg)', padding: '1px 4px', borderRadius: 3 }}>https://</code> forwarding URL (e.g. https://abc123.ngrok.io)</div>
-            <div style={{ marginTop: 4 }}><strong>3.</strong> Paste it below and click "Register Webhook"</div>
+            <div><strong>1.</strong> Abre un terminal y ejecuta: <code style={{ color: 'var(--color-accent)', background: 'var(--color-bg)', padding: '1px 4px', borderRadius: 3 }}>ngrok http 8000</code></div>
+            <div style={{ marginTop: 4 }}><strong>2.</strong> Copia la <code style={{ color: 'var(--color-accent)', background: 'var(--color-bg)', padding: '1px 4px', borderRadius: 3 }}>https://</code> URL de reenvío (p. ej. https://abc123.ngrok.io)</div>
+            <div style={{ marginTop: 4 }}><strong>3.</strong> Pégala abajo y pulsa «Registrar webhook»</div>
           </div>
           <div style={{ display: 'flex', gap: 6 }}>
             <input
@@ -1550,24 +1548,24 @@ function SendBlueSection({
                 opacity: !webhookUrl.trim() || webhookStatus === 'registering' ? 0.5 : 1,
               }}
             >
-              {webhookStatus === 'registering' ? 'Registering...'
-                : webhookStatus === 'done' ? 'Registered!'
-                : webhookStatus === 'error' ? 'Retry'
-                : 'Register Webhook'}
+              {webhookStatus === 'registering' ? 'Registrando...'
+                : webhookStatus === 'done' ? '¡Registrado!'
+                : webhookStatus === 'error' ? 'Reintentar'
+                : 'Registrar webhook'}
             </button>
           </div>
           {webhookStatus === 'done' && (
             <div style={{ fontSize: 11, color: 'var(--color-success)', marginTop: 6 }}>
-              Webhook registered! Incoming texts will be forwarded to your agent.
+              ¡Webhook registrado! Los mensajes que lleguen se reenviarán a tu agente.
             </div>
           )}
           {webhookStatus === 'error' && (
             <div style={{ fontSize: 11, color: 'var(--color-error)', marginTop: 6 }}>
-              Failed to register webhook. Check your ngrok URL and SendBlue credentials.
+              No se ha podido registrar el webhook. Comprueba la URL de ngrok y las credenciales de SendBlue.
             </div>
           )}
           <div style={{ fontSize: 10, color: 'var(--color-text-tertiary)', marginTop: 8 }}>
-            Don't have ngrok? <a href="https://ngrok.com/download" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent)', textDecoration: 'underline' }}>Download it free</a>. You can also skip this step and register the webhook later.
+            ¿No tienes ngrok? <a href="https://ngrok.com/download" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent)', textDecoration: 'underline' }}>Descárgalo gratis</a>. También puedes saltarte este paso y registrar el webhook más tarde.
           </div>
         </div>
       ),
@@ -1600,7 +1598,7 @@ function SendBlueSection({
       setWebhookUrl('');
       setWebhookStatus('idle');
     } catch (err: any) {
-      setError(err.message || 'Failed to connect');
+      setError(err.message || 'No se ha podido conectar');
     } finally {
       setLoading(false);
     }
@@ -1624,11 +1622,11 @@ function SendBlueSection({
         <div style={{ flex: 1 }}>
           <div style={{ fontWeight: 600, fontSize: 13 }}>iMessage + SMS (SendBlue)</div>
           <div style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>
-            Let people text your agent from any phone
+            Deja que te escriban a tu agente desde cualquier móvil
           </div>
         </div>
         <span style={{ color: 'var(--color-accent-purple)', fontSize: 11, fontWeight: 500 }}>
-          {step >= 0 ? 'Set Up' : '+ Add'}
+          {step >= 0 ? 'Configurar' : '+ Añadir'}
         </span>
       </div>
 
@@ -1667,7 +1665,7 @@ function SendBlueSection({
                   border: '1px solid var(--color-border)',
                   borderRadius: 5, cursor: 'pointer',
                 }}
-              >Back</button>
+              >Atrás</button>
             )}
             {step < steps.length - 1 ? (
               <button
@@ -1680,7 +1678,7 @@ function SendBlueSection({
                   cursor: 'pointer', fontWeight: 600,
                   opacity: steps[step]?.canAdvance ? 1 : 0.5,
                 }}
-              >Next</button>
+              >Siguiente</button>
             ) : (
               <button
                 onClick={handleFinish}
@@ -1692,7 +1690,7 @@ function SendBlueSection({
                   cursor: 'pointer', fontWeight: 600,
                   opacity: loading || !steps[step]?.canAdvance ? 0.5 : 1,
                 }}
-              >{loading ? 'Connecting...' : 'Connect'}</button>
+              >{loading ? 'Conectando...' : 'Conectar'}</button>
             )}
           </div>
         </div>
@@ -1791,7 +1789,7 @@ function MessagingSection({ agentId }: { agentId: string }) {
                     background: 'color-mix(in srgb, var(--color-success) 22%, transparent)', color: 'var(--color-success)',
                     padding: '2px 8px', borderRadius: 10,
                     fontSize: 10, fontWeight: 600,
-                  }}>Active</span>
+                  }}>Activo</span>
                   <button
                     onClick={() => handleRemove(binding.id)}
                     style={{
@@ -1800,7 +1798,7 @@ function MessagingSection({ agentId }: { agentId: string }) {
                       border: '1px solid var(--color-border)',
                       borderRadius: 4, cursor: 'pointer',
                     }}
-                  >Remove</button>
+                  >Quitar</button>
                 </div>
               ) : (
                 <button
@@ -1810,7 +1808,7 @@ function MessagingSection({ agentId }: { agentId: string }) {
                     color: 'var(--color-on-accent)', border: 'none', borderRadius: 5,
                     cursor: 'pointer', fontWeight: 600,
                   }}
-                >{isSetup ? 'Cancel' : 'Set Up'}</button>
+                >{isSetup ? 'Cancelar' : 'Configurar'}</button>
               )}
             </div>
 
@@ -1863,7 +1861,7 @@ function MessagingSection({ agentId }: { agentId: string }) {
                                 border: 'none', borderRadius: 3,
                                 cursor: 'pointer', fontWeight: 600,
                               }}
-                            >Copy</button>
+                            >Copiar</button>
                           </div>
                         </div>
                       );
@@ -1900,7 +1898,7 @@ function MessagingSection({ agentId }: { agentId: string }) {
                     cursor: 'pointer', fontWeight: 600,
                     opacity: loading || !canConnect ? 0.5 : 1, marginTop: 4,
                   }}
-                >{loading ? 'Connecting...' : 'Connect'}</button>
+                >{loading ? 'Conectando...' : 'Conectar'}</button>
               </div>
             )}
           </div>
@@ -1943,7 +1941,7 @@ function MemorySection() {
       .then((s) => { setStats(s); setStatsError(''); })
       .catch((error: unknown) => {
         setStats(null);
-        setStatsError(error instanceof Error && error.message ? error.message : 'Could not reach memory backend');
+        setStatsError(error instanceof Error && error.message ? error.message : 'No se puede conectar con el motor de memoria');
       });
   }, []);
 
@@ -1973,7 +1971,7 @@ function MemorySection() {
     if (isTauri()) {
       try {
         const { open } = await import('@tauri-apps/plugin-dialog');
-        const selected = await open({ directory: true, multiple: false, title: 'Select folder to index' });
+        const selected = await open({ directory: true, multiple: false, title: 'Elige una carpeta para indexar' });
         if (selected) setIndexPath(selected as string);
         return;
       } catch {
@@ -2001,11 +1999,11 @@ function MemorySection() {
     setIndexError('');
     try {
       const res = await indexMemoryPath(indexPath.trim());
-      setIndexResult(`Indexed ${res.chunks_indexed} chunk${res.chunks_indexed !== 1 ? 's' : ''}`);
+      setIndexResult(`Indexados ${res.chunks_indexed} fragmento${res.chunks_indexed !== 1 ? 's' : ''}`);
       setIndexPath('');
       loadStats();
     } catch (err: any) {
-      setIndexError(err.message || 'Indexing failed');
+      setIndexError(err.message || 'Error al indexar');
     } finally {
       setIndexing(false);
     }
@@ -2018,11 +2016,11 @@ function MemorySection() {
     setStoreError('');
     try {
       await storeMemory(storeContent.trim());
-      setStoreResult('Stored successfully');
+      setStoreResult('Guardado correctamente');
       setStoreContent('');
       loadStats();
     } catch (err: any) {
-      setStoreError(err.message || 'Failed to store');
+      setStoreError(err.message || 'No se ha podido guardar');
     } finally {
       setStoring(false);
     }
@@ -2047,18 +2045,18 @@ function MemorySection() {
               <Brain size={18} style={{ color: 'var(--color-accent-purple)' }} />
             </div>
             <div className="min-w-0">
-              <h3 className="text-sm font-semibold" style={{ color: 'var(--color-text)' }}>Memory Backend</h3>
+              <h3 className="text-sm font-semibold" style={{ color: 'var(--color-text)' }}>Motor de memoria</h3>
               {statsError ? (
                 <div className="mt-0.5">
                   <p role="alert" className="text-xs break-words" style={{ color: 'var(--color-error)' }}>{statsError}</p>
                   <button
                     type="button"
                     onClick={loadStats}
-                    aria-label="Retry memory backend status"
+                    aria-label="Reintentar estado del motor de memoria"
                     className="text-xs underline cursor-pointer mt-1"
                     style={{ color: 'var(--color-accent)' }}
                   >
-                    Retry
+                    Reintentar
                   </button>
                 </div>
               ) : stats ? (
@@ -2071,7 +2069,7 @@ function MemorySection() {
                   </span>
                 </div>
               ) : (
-                <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-tertiary)' }}>Connecting...</p>
+                <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-tertiary)' }}>Conectando...</p>
               )}
             </div>
           </div>
@@ -2095,7 +2093,7 @@ function MemorySection() {
       >
         <div className="flex items-center gap-2 mb-3">
           <Search size={14} style={{ color: 'var(--color-accent-purple)' }} />
-          <h3 className="text-sm font-semibold" style={{ color: 'var(--color-text)' }}>Search Memory</h3>
+          <h3 className="text-sm font-semibold" style={{ color: 'var(--color-text)' }}>Buscar en la memoria</h3>
         </div>
         <div className="flex gap-2">
           <div className="flex-1 relative">
@@ -2103,7 +2101,7 @@ function MemorySection() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
-              placeholder="What are you looking for?"
+              placeholder="¿Qué buscas?"
               className="w-full text-sm px-3 py-2 rounded-lg outline-none transition-colors"
               style={{
                 background: 'var(--color-bg)',
@@ -2123,7 +2121,7 @@ function MemorySection() {
             }}
           >
             {searching ? <Loader2 size={13} className="animate-spin" /> : <Search size={13} />}
-            {searching ? 'Searching' : 'Search'}
+            {searching ? 'Buscando' : 'Buscar'}
           </button>
         </div>
 
@@ -2131,7 +2129,7 @@ function MemorySection() {
         {searchDone && searchResults.length === 0 && (
           <div className="flex flex-col items-center py-6 gap-2">
             <Search size={20} style={{ color: 'var(--color-text-tertiary)', opacity: 0.4 }} />
-            <p className="text-xs" style={{ color: 'var(--color-text-tertiary)' }}>No matching memories found</p>
+            <p className="text-xs" style={{ color: 'var(--color-text-tertiary)' }}>No hay recuerdos que coincidan</p>
           </div>
         )}
         {searchResults.length > 0 && (
@@ -2161,7 +2159,7 @@ function MemorySection() {
                         ? 'var(--color-warning)'
                         : 'var(--color-text-tertiary)',
                   }}>
-                    {(r.score * 100).toFixed(0)}% match
+                    {(r.score * 100).toFixed(0)}% de coincidencia
                   </span>
                   {r.metadata?.source != null && (
                     <span className="text-[10px]" style={{ color: 'var(--color-text-tertiary)' }}>
@@ -2184,10 +2182,10 @@ function MemorySection() {
         >
           <div className="flex items-center gap-2 mb-3">
             <FolderOpen size={14} style={{ color: 'var(--color-accent-purple)' }} />
-            <h3 className="text-sm font-semibold" style={{ color: 'var(--color-text)' }}>Index Folder</h3>
+            <h3 className="text-sm font-semibold" style={{ color: 'var(--color-text)' }}>Indexar carpeta</h3>
           </div>
           <p className="text-xs mb-3" style={{ color: 'var(--color-text-tertiary)' }}>
-            Scan a folder and index all supported files into memory.
+            Analiza una carpeta y guarda en la memoria todos los archivos compatibles.
           </p>
           <div className="flex gap-2 mb-2">
             <input
@@ -2212,7 +2210,7 @@ function MemorySection() {
                 }}
               >
                 <FolderOpen size={12} />
-                Browse
+                Examinar
               </button>
             )}
           </div>
@@ -2227,7 +2225,7 @@ function MemorySection() {
             }}
           >
             {indexing && <Loader2 size={13} className="animate-spin" />}
-            {indexing ? 'Indexing files...' : 'Index'}
+            {indexing ? 'Indexando archivos...' : 'Indexar'}
           </button>
           {indexResult && (
             <p className="text-xs mt-2 font-medium" style={{ color: 'var(--color-success)' }}>{indexResult}</p>
@@ -2244,15 +2242,15 @@ function MemorySection() {
         >
           <div className="flex items-center gap-2 mb-3">
             <FileText size={14} style={{ color: 'var(--color-accent-purple)' }} />
-            <h3 className="text-sm font-semibold" style={{ color: 'var(--color-text)' }}>Store Text</h3>
+            <h3 className="text-sm font-semibold" style={{ color: 'var(--color-text)' }}>Guardar texto</h3>
           </div>
           <p className="text-xs mb-3" style={{ color: 'var(--color-text-tertiary)' }}>
-            Paste any text to add directly to your memory store.
+            Pega cualquier texto para añadirlo directamente a tu memoria.
           </p>
           <textarea
             value={storeContent}
             onChange={(e) => setStoreContent(e.target.value)}
-            placeholder="Paste or type content here..."
+            placeholder="Pega o escribe aquí el contenido..."
             rows={4}
             className="w-full text-sm px-3 py-2 rounded-lg outline-none resize-y"
             style={{
@@ -2275,7 +2273,7 @@ function MemorySection() {
             }}
           >
             {storing && <Loader2 size={13} className="animate-spin" />}
-            {storing ? 'Storing...' : 'Store'}
+            {storing ? 'Guardando...' : 'Guardar'}
           </button>
           {storeResult && (
             <p className="text-xs mt-2 font-medium" style={{ color: 'var(--color-success)' }}>{storeResult}</p>
@@ -2313,7 +2311,7 @@ export function DataSourcesPage() {
     setCreatingAgent(true);
     try {
       const agent = await createManagedAgent({
-        name: "My Assistant",
+        name: "Mi asistente",
         template_id: "personal_deep_research",
       });
       setAgents((prev) => [...prev, agent]);
@@ -2333,9 +2331,9 @@ export function DataSourcesPage() {
   }, [activeTab, firstAgent, creatingAgent, ensureAgent]);
 
   const tabs = [
-    { id: 'sources' as const, label: 'Data Sources', icon: Database },
-    { id: 'messaging' as const, label: 'Messaging Channels', icon: MessageSquare },
-    { id: 'memory' as const, label: 'Memory', icon: Brain },
+    { id: 'sources' as const, label: 'Fuentes de datos', icon: Database },
+    { id: 'messaging' as const, label: 'Canales de mensajería', icon: MessageSquare },
+    { id: 'memory' as const, label: 'Memoria', icon: Brain },
   ];
 
   return (
@@ -2343,10 +2341,10 @@ export function DataSourcesPage() {
       <div className="max-w-5xl mx-auto">
       <header className="mb-6">
         <h1 className="text-lg font-semibold" style={{ color: 'var(--color-text)' }}>
-          Data Sources, Channels &amp; Memory
+          Fuentes de datos, canales y memoria
         </h1>
         <p className="text-sm mt-2 max-w-2xl" style={{ color: 'var(--color-text-secondary)' }}>
-          Connect personal data so the assistant can search across everything, and set up messaging channels to chat from your phone.
+          Conecta tus datos personales para que el asistente pueda buscar en todo, y configura canales de mensajería para chatear desde el móvil.
         </p>
       </header>
 
@@ -2388,7 +2386,7 @@ export function DataSourcesPage() {
           ) : creatingAgent ? (
             <div className="flex items-center gap-3 p-4 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
               <Loader2 size={16} className="animate-spin" style={{ color: 'var(--color-accent)' }} />
-              Setting up your assistant...
+              Preparando tu asistente...
             </div>
           ) : null
         )}

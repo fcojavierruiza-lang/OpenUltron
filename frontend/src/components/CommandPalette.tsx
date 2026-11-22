@@ -13,13 +13,13 @@ import {
 
 /** Popular models that users can download from the catalogue. */
 const CATALOGUE_MODELS = [
-  { id: 'qwen3.5:0.8b', size: '~1 GB', desc: 'Qwen 3.5 0.8B — fast, lightweight' },
+  { id: 'qwen3.5:0.8b', size: '~1 GB', desc: 'Qwen 3.5 0.8B — rápido y ligero' },
   { id: 'qwen3.5:2b', size: '~2.7 GB', desc: 'Qwen 3.5 2B' },
-  { id: 'qwen3.5:4b', size: '~3.4 GB', desc: 'Qwen 3.5 4B — recommended default' },
+  { id: 'qwen3.5:4b', size: '~3.4 GB', desc: 'Qwen 3.5 4B — recomendado por defecto' },
   { id: 'qwen3.5:9b', size: '~6.6 GB', desc: 'Qwen 3.5 9B' },
   { id: 'qwen3.5:27b', size: '~17 GB', desc: 'Qwen 3.5 27B' },
   { id: 'qwen3.5:35b', size: '~24 GB', desc: 'Qwen 3.5 35B' },
-  { id: 'qwen3.5:122b', size: '~81 GB', desc: 'Qwen 3.5 122B — largest' },
+  { id: 'qwen3.5:122b', size: '~81 GB', desc: 'Qwen 3.5 122B — el más grande' },
   { id: 'llama3.3:latest', size: '~4.9 GB', desc: 'Llama 3.3 8B' },
   { id: 'mistral:latest', size: '~4.1 GB', desc: 'Mistral 7B' },
   { id: 'gemma3:latest', size: '~3.3 GB', desc: 'Gemma 3 4B' },
@@ -39,45 +39,45 @@ const CLOUD_PROVIDERS: CloudProvider[] = [
     name: 'OpenAI',
     envKey: 'OPENAI_API_KEY',
     models: [
-      { id: 'gpt-4o', desc: 'GPT-4o — fast, multimodal' },
-      { id: 'gpt-4o-mini', desc: 'GPT-4o Mini — cheap, fast' },
-      { id: 'o3-mini', desc: 'o3-mini — reasoning' },
+      { id: 'gpt-4o', desc: 'GPT-4o — rápido y multimodal' },
+      { id: 'gpt-4o-mini', desc: 'GPT-4o Mini — barato y rápido' },
+      { id: 'o3-mini', desc: 'o3-mini — razonamiento' },
     ],
   },
   {
     name: 'Anthropic',
     envKey: 'ANTHROPIC_API_KEY',
     models: [
-      { id: 'claude-sonnet-4-6', desc: 'Claude Sonnet 4.6 — balanced' },
-      { id: 'claude-opus-4-6', desc: 'Claude Opus 4.6 — most capable' },
-      { id: 'claude-haiku-4-5', desc: 'Claude Haiku 4.5 — fastest' },
+      { id: 'claude-sonnet-4-6', desc: 'Claude Sonnet 4.6 — equilibrado' },
+      { id: 'claude-opus-4-6', desc: 'Claude Opus 4.6 — el más capaz' },
+      { id: 'claude-haiku-4-5', desc: 'Claude Haiku 4.5 — el más rápido' },
     ],
   },
   {
     name: 'Google',
     envKey: 'GEMINI_API_KEY',
     models: [
-      { id: 'gemini-3.8-flash', desc: 'Gemini 3.8 Flash — fast' },
-      { id: 'gemini-3.1-pro-preview', desc: 'Gemini 3.1 Pro Preview — reasoning' },
-      { id: 'gemini-3.1-flash-lite', desc: 'Gemini 3.1 Flash Lite — lightweight' },
+      { id: 'gemini-3.8-flash', desc: 'Gemini 3.8 Flash — rápido' },
+      { id: 'gemini-3.1-pro-preview', desc: 'Gemini 3.1 Pro Preview — razonamiento' },
+      { id: 'gemini-3.1-flash-lite', desc: 'Gemini 3.1 Flash Lite — ligero' },
     ],
   },
   {
     name: 'OpenRouter',
     envKey: 'OPENROUTER_API_KEY',
     models: [
-      { id: 'openrouter/auto', desc: 'Auto — best model for the task' },
-      { id: 'openrouter/anthropic/claude-sonnet-4.5', desc: 'Claude Sonnet 4.5 via OpenRouter' },
-      { id: 'openrouter/deepseek/deepseek-r1-0528', desc: 'DeepSeek R1 via OpenRouter' },
+      { id: 'openrouter/auto', desc: 'Auto — el mejor modelo para cada tarea' },
+      { id: 'openrouter/anthropic/claude-sonnet-4.5', desc: 'Claude Sonnet 4.5 a través de OpenRouter' },
+      { id: 'openrouter/deepseek/deepseek-r1-0528', desc: 'DeepSeek R1 a través de OpenRouter' },
     ],
   },
   {
     name: 'Atlas Cloud',
     envKey: 'ATLASCLOUD_API_KEY',
     models: [
-      { id: 'atlascloud/openai/gpt-4.1-mini', desc: 'GPT-4.1 Mini via Atlas Cloud' },
-      { id: 'atlascloud/deepseek-ai/deepseek-v3.2', desc: 'DeepSeek V3.2 via Atlas Cloud' },
-      { id: 'atlascloud/Qwen/Qwen3-235B-A22B-Instruct-2507', desc: 'Qwen3 235B via Atlas Cloud' },
+      { id: 'atlascloud/openai/gpt-4.1-mini', desc: 'GPT-4.1 Mini a través de Atlas Cloud' },
+      { id: 'atlascloud/deepseek-ai/deepseek-v3.2', desc: 'DeepSeek V3.2 a través de Atlas Cloud' },
+      { id: 'atlascloud/Qwen/Qwen3-235B-A22B-Instruct-2507', desc: 'Qwen3 235B a través de Atlas Cloud' },
     ],
   },
 ];
@@ -118,7 +118,7 @@ export function CommandPalette() {
       setCloudKeyStatus(await getCloudKeyStatus());
       setCloudKeyError(null);
     } catch (e: any) {
-      setCloudKeyError(e?.message || 'Failed to read cloud key status');
+      setCloudKeyError(e?.message || 'No se ha podido leer el estado de las claves de la nube');
     }
   }, [desktopKeyStorage]);
 
@@ -160,12 +160,12 @@ export function CommandPalette() {
     if (modelId !== previousModel) {
       const { setModelLoading, addLogEntry } = useAppStore.getState();
       setModelLoading(true);
-      addLogEntry({ timestamp: Date.now(), level: 'info', category: 'model', message: `Switching to ${modelId}...` });
+      addLogEntry({ timestamp: Date.now(), level: 'info', category: 'model', message: `Cambiando a ${modelId}...` });
       try {
         await preloadModel(modelId, owner);
         addLogEntry({ timestamp: Date.now(), level: 'info', category: 'model', message: `${modelId} loaded` });
       } catch (e: any) {
-        addLogEntry({ timestamp: Date.now(), level: 'error', category: 'model', message: `Failed to load ${modelId}: ${e.message}` });
+        addLogEntry({ timestamp: Date.now(), level: 'error', category: 'model', message: `Error al cargar ${modelId}: ${e.message}` });
       } finally {
         setModelLoading(false);
       }
@@ -187,15 +187,15 @@ export function CommandPalette() {
       setPullSuccess(modelId);
       useAppStore.getState().addLogEntry({
         timestamp: Date.now(), level: 'info', category: 'model',
-        message: `Downloaded ${modelId}`,
+        message: `Descargado ${modelId}`,
       });
       await refreshModels();
       setSelectedModel(modelId);
     } catch (e: any) {
-      setPullError(e.message || 'Download failed');
+      setPullError(e.message || 'Error en la descarga');
       useAppStore.getState().addLogEntry({
         timestamp: Date.now(), level: 'error', category: 'model',
-        message: `Download failed for ${modelId}: ${e.message}`,
+        message: `Error al descargar ${modelId}: ${e.message}`,
       });
     } finally {
       setPulling(null);
@@ -208,7 +208,7 @@ export function CommandPalette() {
       await deleteModel(modelId);
       useAppStore.getState().addLogEntry({
         timestamp: Date.now(), level: 'info', category: 'model',
-        message: `Deleted ${modelId}`,
+        message: `Eliminado ${modelId}`,
       });
       await refreshModels();
       if (selectedModel === modelId) {
@@ -238,11 +238,11 @@ export function CommandPalette() {
       await refreshCloudKeyStatus();
       useAppStore.getState().addLogEntry({
         timestamp: Date.now(), level: 'info', category: 'model',
-        message: `${provider.name} API key ${keyValue ? 'saved' : 'removed'}. Refreshing model list...`,
+        message: `${provider.name}: clave API ${keyValue ? 'guardada' : 'eliminada'}. Actualizando la lista de modelos...`,
       });
       await refreshModels();
     } catch (e: any) {
-      setCloudKeyError(e?.message || `Failed to save ${provider.name} API key`);
+      setCloudKeyError(e?.message || `No se ha podido guardar la clave API de ${provider.name}`);
     } finally {
       setSavingKey(null);
     }
@@ -270,9 +270,9 @@ export function CommandPalette() {
   };
 
   const TAB_LABELS: Record<Tab, string> = {
-    installed: `Installed Models (${models.length})`,
-    catalogue: 'Download',
-    cloud: 'Cloud Models',
+    installed: `Modelos instalados (${models.length})`,
+    catalogue: 'Descargar',
+    cloud: 'Modelos en la nube',
   };
 
   return (
@@ -322,7 +322,7 @@ export function CommandPalette() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder={tab === 'installed' ? 'Search installed models...' : 'Search models to download...'}
+              placeholder={tab === 'installed' ? 'Buscar modelos instalados...' : 'Buscar modelos para descargar...'}
               className="flex-1 bg-transparent outline-none text-sm"
               style={{ color: 'var(--color-text)' }}
             />
@@ -344,7 +344,7 @@ export function CommandPalette() {
         )}
         {pullSuccess && (
           <div className="px-4 py-2 text-xs flex items-center gap-1.5" style={{ color: 'var(--color-success)', background: 'color-mix(in srgb, var(--color-success) 5%, transparent)' }}>
-            <Check size={12} /> Downloaded {pullSuccess} successfully
+            <Check size={12} /> Descargados {pullSuccess} successfully
           </div>
         )}
         {tab === 'cloud' && cloudKeyError && (
@@ -359,8 +359,8 @@ export function CommandPalette() {
             filtered.length === 0 ? (
               <div className="px-4 py-6 text-center text-sm" style={{ color: 'var(--color-text-tertiary)' }}>
                 {models.length === 0
-                  ? 'No models available — switch to "Download" to get started'
-                  : 'No matching models'}
+                  ? 'No hay modelos disponibles. Cambia a «Descargar» para empezar'
+                  : 'Ningún modelo coincide'}
               </div>
             ) : (
               (filtered as typeof models).map((model, idx) => {
@@ -391,7 +391,7 @@ export function CommandPalette() {
                       </div>
                       {isActive && (
                         <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: 'var(--color-accent-subtle)', color: 'var(--color-accent)' }}>
-                          Active
+                          Activo
                         </span>
                       )}
                     </button>
@@ -401,7 +401,7 @@ export function CommandPalette() {
                         disabled={isDeleting}
                         className="p-1 rounded transition-colors cursor-pointer"
                         style={{ color: 'var(--color-text-tertiary)', opacity: 0 }}
-                        title="Delete model"
+                        title="Eliminar modelo"
                         onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.color = 'var(--color-error)'; }}
                         onMouseLeave={(e) => { e.currentTarget.style.opacity = '0'; e.currentTarget.style.color = 'var(--color-text-tertiary)'; }}
                       >
@@ -434,21 +434,21 @@ export function CommandPalette() {
                         opacity: (isPulling || (pulling && !isPulling)) ? 0.5 : 1,
                       }}
                     >
-                      {isPulling ? <><Loader2 size={12} className="animate-spin" /> Downloading...</> :
-                       justInstalled ? <><Check size={12} /> Installed</> :
-                       <><Download size={12} /> Download</>}
+                      {isPulling ? <><Loader2 size={12} className="animate-spin" /> Descargando...</> :
+                       justInstalled ? <><Check size={12} /> Instalados</> :
+                       <><Download size={12} /> Descargar</>}
                     </button>
                   </div>
                 );
               })}
               <div className="px-4 py-3 mt-1" style={{ borderTop: '1px solid var(--color-border)' }}>
-                <div className="text-[11px] mb-2" style={{ color: 'var(--color-text-tertiary)' }}>Or enter any Ollama model name:</div>
+                <div className="text-[11px] mb-2" style={{ color: 'var(--color-text-tertiary)' }}>O escribe el nombre de cualquier modelo de Ollama:</div>
                 <div className="flex gap-2">
                   <input
                     type="text" value={customModel}
                     onChange={(e) => setCustomModel(e.target.value)}
                     onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleCustomPull(); } }}
-                    placeholder="e.g. codellama:7b"
+                    placeholder="p. ej. codellama:7b"
                     className="flex-1 text-sm px-3 py-1.5 rounded-lg outline-none"
                     style={{ background: 'var(--color-bg-secondary)', color: 'var(--color-text)', border: '1px solid var(--color-border)' }}
                   />
@@ -457,7 +457,7 @@ export function CommandPalette() {
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer"
                     style={{ background: 'var(--color-accent)', color: 'var(--color-on-accent)', opacity: (!customModel.trim() || pulling) ? 0.5 : 1 }}
                   >
-                    <Download size={12} /> Pull
+                    <Download size={12} /> Descargar
                   </button>
                 </div>
               </div>
@@ -467,8 +467,8 @@ export function CommandPalette() {
             <div className="px-4 py-2">
               <div className="text-[11px] mb-3" style={{ color: 'var(--color-text-tertiary)' }}>
                 {desktopKeyStorage
-                  ? 'Add your API keys to use cloud models. Keys are stored in secure desktop storage.'
-                  : 'Configure cloud provider keys in the server environment to use cloud models.'}
+                  ? 'Añade tus claves API para usar modelos en la nube. Las claves se guardan en el almacenamiento seguro del escritorio.'
+                  : 'Configura las claves de los proveedores en el entorno del servidor para usar modelos en la nube.'}
               </div>
 
               {CLOUD_PROVIDERS.map((provider) => {
@@ -485,7 +485,7 @@ export function CommandPalette() {
                       <span className="text-xs font-medium" style={{ color: 'var(--color-text)' }}>{provider.name}</span>
                       {hasKey && (
                         <span className="text-[10px] px-1.5 py-0.5 rounded-full" style={{ background: 'color-mix(in srgb, var(--color-success) 10%, transparent)', color: 'var(--color-success)' }}>
-                          Connected
+                          Conectado
                         </span>
                       )}
                     </div>
@@ -499,7 +499,7 @@ export function CommandPalette() {
                           value={key}
                           onChange={(e) => setApiKeys((prev) => ({ ...prev, [provider.envKey]: e.target.value }))}
                           onBlur={() => handleKeyBlur(provider)}
-                          placeholder={hasSavedKey ? 'Saved in secure storage' : provider.envKey}
+                          placeholder={hasSavedKey ? 'Guardada en almacenamiento seguro' : provider.envKey}
                           disabled={!desktopKeyStorage || isSaving}
                           className="flex-1 text-xs px-2 py-1.5 bg-transparent outline-none font-mono"
                           style={{ color: 'var(--color-text)' }}
@@ -518,7 +518,7 @@ export function CommandPalette() {
                           className="px-2 py-1 rounded-lg text-[10px] cursor-pointer"
                           style={{ color: 'var(--color-error)', border: '1px solid var(--color-error)', opacity: isSaving ? 0.5 : 1 }}
                         >
-                          {isSaving ? 'Saving' : 'Remove'}
+                          {isSaving ? 'Guardando' : 'Quitar'}
                         </button>
                       )}
                     </div>
@@ -548,7 +548,7 @@ export function CommandPalette() {
                               </div>
                               {isActive && (
                                 <span className="text-[9px] px-1.5 py-0.5 rounded-full shrink-0" style={{ background: 'var(--color-accent-subtle)', color: 'var(--color-accent)' }}>
-                                  Active
+                                  Activo
                                 </span>
                               )}
                             </button>
@@ -570,14 +570,14 @@ export function CommandPalette() {
         >
           {tab === 'installed' ? (
             <>
-              <span><kbd className="font-mono">↑↓</kbd> Navigate</span>
-              <span><kbd className="font-mono">Enter</kbd> Select</span>
-              <span><kbd className="font-mono">Esc</kbd> Close</span>
+              <span><kbd className="font-mono">↑↓</kbd> Navegar</span>
+              <span><kbd className="font-mono">Intro</kbd> Seleccionar</span>
+              <span><kbd className="font-mono">Esc</kbd> Cerrar</span>
             </>
           ) : tab === 'catalogue' ? (
-            <span>Models are downloaded from the Ollama registry</span>
+            <span>Los modelos se descargan del registro de Ollama</span>
           ) : (
-            <span>API keys are stored locally and never sent to Ultron servers</span>
+            <span>Las claves API se guardan en local y nunca se envían a servidores de Ultron</span>
           )}
         </div>
       </div>

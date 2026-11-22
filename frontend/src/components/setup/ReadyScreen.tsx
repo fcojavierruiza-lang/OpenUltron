@@ -10,33 +10,33 @@ function getStarterQueries(connectedSources: string[]): string[] {
   const has = (id: string) => connectedSources.includes(id);
 
   if (has('gmail') || has('gmail_imap')) {
-    queries.push('What emails need my attention today?');
+    queries.push('¿Qué correos necesitan mi atención hoy?');
   }
   if (has('gcalendar')) {
-    queries.push("What's on my calendar this week?");
+    queries.push("¿Qué tengo en el calendario esta semana?");
   }
   if (has('slack')) {
-    queries.push('Summarize important Slack messages from yesterday');
+    queries.push('Resume los mensajes importantes de Slack de ayer');
   }
   if (has('gdrive') || has('notion') || has('obsidian')) {
-    queries.push('Find my notes about project planning');
+    queries.push('Busca mis notas sobre la planificación del proyecto');
   }
   if (has('imessage')) {
-    queries.push('What have I been texting about lately?');
+    queries.push('¿De qué he estado hablando por mensaje últimamente?');
   }
   if (has('gcontacts')) {
-    queries.push('Who are my most frequent collaborators?');
+    queries.push('¿Con quién colaboro más a menudo?');
   }
   if (has('granola')) {
-    queries.push('Summarize my recent meeting notes');
+    queries.push('Resume mis notas de reuniones recientes');
   }
 
   // Fallback defaults
   if (queries.length === 0) {
     return [
-      'What should I focus on today?',
-      'Summarize my recent activity',
-      'Help me draft a quick update',
+      '¿En qué debería centrarme hoy?',
+      'Resume mi actividad reciente',
+      'Ayúdame a redactar una actualización rápida',
     ];
   }
 
@@ -108,13 +108,13 @@ export function ReadyScreen({
       {/* Headline */}
       <div>
         <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--color-text)' }}>
-          You're all set!
+          ¡Todo listo!
         </h2>
         <p className="text-sm max-w-sm" style={{ color: 'var(--color-text-secondary)' }}>
           {connectedCards.length > 0
-            ? `Connected ${connectedCards.length} source${connectedCards.length !== 1 ? 's' : ''}: ${connectedCards.map((c) => c!.display_name).join(', ')}.`
-            : 'Your personal AI is ready to help.'}
-          {' '}Ask anything about your work and life.
+            ? `${connectedCards.length} fuente${connectedCards.length !== 1 ? 's' : ''} conectada${connectedCards.length !== 1 ? 's' : ''}: ${connectedCards.map((c) => c!.display_name).join(', ')}.`
+            : 'Tu IA personal está lista para ayudarte.'}
+          {' '}Pregúntale lo que quieras sobre tu trabajo y tu vida.
         </p>
       </div>
 
@@ -122,7 +122,7 @@ export function ReadyScreen({
       <div className="w-full max-w-sm flex flex-col gap-2">
         <p className="text-xs font-semibold uppercase tracking-wider mb-1 text-left"
           style={{ color: 'var(--color-text-tertiary)' }}>
-          Try asking
+          Prueba a preguntar
         </p>
         {starters.map((q) => (
           <StarterCard key={q} query={q} onSelect={onStart} />
@@ -135,7 +135,7 @@ export function ReadyScreen({
         className="px-8 py-3 rounded-xl font-semibold text-sm transition-all"
         style={{ background: 'var(--color-accent)', color: 'var(--color-on-accent)' }}
       >
-        Open Chat
+        Abrir chat
       </button>
     </div>
   );

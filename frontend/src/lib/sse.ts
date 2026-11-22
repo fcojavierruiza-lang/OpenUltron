@@ -23,7 +23,7 @@ export async function* streamChat(
   });
 
   if (!response.ok) {
-    throw new Error(`Chat request failed: ${response.status}`);
+    throw new Error(`Error en la petición de chat: ${response.status}`);
   }
 
   const reader = response.body!.getReader();
@@ -75,7 +75,7 @@ export async function* streamResearch(
   });
 
   if (!response.ok) {
-    throw new Error(`Research request failed: ${response.status}`);
+    throw new Error(`Error en la petición de investigación: ${response.status}`);
   }
 
   const reader = response.body!.getReader();

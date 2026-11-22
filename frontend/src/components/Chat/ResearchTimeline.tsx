@@ -33,9 +33,9 @@ function formatTimeRange(tr: TimeRange | string | undefined): string | null {
 function summarizeTraces(traces: ResearchSearchTrace[]): string {
   const n = traces.length;
   const hits = traces.reduce((s, t) => s + (t.numHits ?? 0), 0);
-  const searchLabel = `${n} ${n === 1 ? 'search' : 'searches'}`;
+  const searchLabel = `${n} ${n === 1 ? 'búsqueda' : 'búsquedas'}`;
   if (hits === 0) return searchLabel;
-  return `${searchLabel} · ${hits} ${hits === 1 ? 'result' : 'results'}`;
+  return `${searchLabel} · ${hits} ${hits === 1 ? 'resultado' : 'resultados'}`;
 }
 
 function StatusLine({ text }: { text: string }) {
@@ -87,7 +87,7 @@ function TimelineStep({
           color: active ? 'var(--color-accent)' : 'var(--color-text-tertiary)',
         }}
       >
-        Search {index}
+        Buscar {index}
       </div>
 
       <div
@@ -171,7 +171,7 @@ export function ResearchTimeline({ traces, isLive, hasContent }: Props) {
               boxShadow: '0 0 0 3px var(--color-accent-subtle)',
             }}
           />
-          <StatusLine text="Analyzing query" />
+          <StatusLine text="Analizando la consulta" />
         </div>
       </div>
     );
@@ -192,7 +192,7 @@ export function ResearchTimeline({ traces, isLive, hasContent }: Props) {
           border: 'none',
           padding: 0,
         }}
-        title={expanded ? 'Collapse search trace' : 'Expand search trace'}
+        title={expanded ? 'Contraer el rastro de búsqueda' : 'Desplegar el rastro de búsqueda'}
       >
         <span>{summary}</span>
         <Chevron size={12} />
@@ -225,7 +225,7 @@ export function ResearchTimeline({ traces, isLive, hasContent }: Props) {
                     boxShadow: '0 0 0 3px var(--color-accent-subtle)',
                   }}
                 />
-                <StatusLine text="Synthesizing findings" />
+                <StatusLine text="Sintetizando resultados" />
               </div>
             )}
           </div>

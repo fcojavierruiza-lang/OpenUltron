@@ -32,10 +32,10 @@ describe('existing sharing modal', () => {
     const html = renderToStaticMarkup(<OptInModal onClose={vi.fn()} />);
     expect(html).not.toContain('type="checkbox"');
     expect(html).toContain('Enable analytics &amp; enter giveaway');
-    expect(html).toContain('Enter giveaway only');
-    expect(html).toContain('Enable analytics only');
-    expect(html).toContain('Continue without sharing');
-    expect(html).toContain('Win a Mac mini');
+    expect(html).toContain('Solo participar en el sorteo');
+    expect(html).toContain('Solo activar estadísticas');
+    expect(html).toContain('Continuar sin compartir');
+    expect(html).toContain('Gana un Mac mini');
     expect(html).toContain('Your name and savings are public');
     expect(mocks.savePreference).not.toHaveBeenCalled();
     expect(mocks.setOptIn).not.toHaveBeenCalled();
@@ -44,8 +44,8 @@ describe('existing sharing modal', () => {
   it('allows existing leaderboard members to change analytics independently', () => {
     mocks.joined = true;
     const html = renderToStaticMarkup(<OptInModal onClose={vi.fn()} />);
-    expect(html).toContain('Enable analytics');
-    expect(html).toContain('Stop leaderboard updates');
+    expect(html).toContain('Activar estadísticas');
+    expect(html).toContain('Dejar de actualizar la clasificación');
     expect(mocks.savePreference).not.toHaveBeenCalled();
   });
 });

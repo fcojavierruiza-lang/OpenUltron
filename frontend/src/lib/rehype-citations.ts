@@ -54,7 +54,7 @@ function buildPill(n: number, src: ResearchSource): HastNode {
       rel: 'noopener noreferrer',
       className: ['research-citation'],
       'data-ref': String(n),
-      title: buildTooltip(src) || `Source ${n}`,
+      title: buildTooltip(src) || `Fuente ${n}`,
     },
     children: [{ type: 'text', value: String(n) }],
   };
